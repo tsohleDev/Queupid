@@ -3,19 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "repository": "https://github.com/tsohleDev/CutinEdge.git",
+  "author": "Tsohle Mokhemisi",
+  "license": "MIT",
+  "private": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tsohleDev/CutinEdge.git"
+  "dependencies": {
+    "express": "^4.16.3"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tsohleDev/CutinEdge/issues"
-  },
-  "homepage": "https://github.com/tsohleDev/CutinEdge#readme"
+  "engines": {
+    "node": ">=14"
+  }
 }
