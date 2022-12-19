@@ -1,9 +1,17 @@
-var http = require('http')
+const http = require("http")
+const fs = require("fs");
 
-function onRequest(request, response) {
-    response.writeHead(200, {'content-type': 'text/plain'})
-    response.write('Hello World')
-    response.end()
-}
+http.createServer((request, response) => {
+    console.log('Server running at port 8000')
+    response.writeHead(200, {'content-type': 'text/html'})
+    fs.readFile('./src/index.html', null, (error, data) => {
+        if (error){
+            response.writeHead(404)
+            response.write('file not found')    
+        } else {
+            response.write(data)
+        }
+        response.end()
+    })
 
-http.createServer(onRequest).listen(8000)
+}).listen(8000)
