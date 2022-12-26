@@ -19,6 +19,10 @@ class Menu{
         if (this.menuTransition) {
             document.querySelector('.navigation').style.backgroundColor = 'transparent'
         }
+        if (this.backgroundImage) {
+            document.querySelector('body').style.backgroundImage = `url(${background})`
+        }
+        
         this.menu.style.display = 'flex'
     }
 

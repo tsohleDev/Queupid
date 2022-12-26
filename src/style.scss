@@ -149,6 +149,11 @@ main {
             margin: 0 2vw;
         }
     }
+
+    .client-info {
+        display: flex;
+        justify-content: space-between;
+    }
 }
 
 #about {

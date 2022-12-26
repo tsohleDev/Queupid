@@ -9,33 +9,36 @@ import Queue from './modules/Queue.js';
 const clients = new Queue()
 
 const menuButton = document.querySelector('#menu')
-let current = document.querySelector('#home')
-let imagebackground = true
+const home = document.querySelector('#home')
+let current = home
+let imagebackground = false
 const menu = document.querySelector('.menu')
 
-
+let pageNavigator = null
 let toogle = true
 menuButton.addEventListener('click', () => {
-  const menuToggler = new Menu(menu, current, true, imagebackground)
-  menuToggler.toggle(toogle)
+  if (current !== home) imagebackground = false
+  pageNavigator = new Menu(menu, current, true, imagebackground)
+  pageNavigator.toggle(toogle)
+
+  imagebackground = !imagebackground
   toogle = !toogle
 })
 
 const join = document.querySelector('#join')
-let pageNavigator = null
 document.querySelector('#get-cut').addEventListener('click', () => {
   pageNavigator = new Menu(join, current, false, false)
   pageNavigator.toggle(true)
-  imagebackground = false
+  
   current = join
 })
 
 const inputs = document.querySelectorAll('#barber, #haircut, #request')
 const queue = document.querySelector('#queue')
 document.querySelector('#join-qeueu').addEventListener('click', () => {
-  console.log('hello world')
   pageNavigator = new Menu(queue, current, false, false)
   pageNavigator.toggle(true)
+  
   const client = {
     name: 'tsohle',
     sex: 1,
@@ -44,11 +47,19 @@ document.querySelector('#join-qeueu').addEventListener('click', () => {
     request: inputs[2]
   }
 
+  const p = new Person(client)
+  p.append()
+  
   current = queue
   socket.emit('client', client)
 })
 
+document.querySelector('#forfit-qeueu').addEventListener('click', () => {
+  pageNavigator = new Menu(home, current, false, true)
+  pageNavigator.toggle(true)
 
+  current = home
+})
 
 socket.on('client', client => {
   const p = new Person(client)

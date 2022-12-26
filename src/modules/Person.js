@@ -10,7 +10,7 @@ class Person {
     append() {
         const char = male
         const container = document.createElement('div')
-       
+        container.classList.add('client-info')
         container.innerHTML = `
         <img src=${char} /> ${this.client.name}
         `
