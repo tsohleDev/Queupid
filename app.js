@@ -25,9 +25,10 @@ const io = require('socket.io')(http, { cors: { origin: "*" } });
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.get('/', (req, res) => {
-  res.send("dist")
-})
+app.get('/admin', function(req, res) {
+  res.sendFile(path.join(__dirname, 'dist/admin.html'));
+});
+
 
 io.on('connection', (socket) => {
   console.log('a user connected');

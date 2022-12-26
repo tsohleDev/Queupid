@@ -1,6 +1,6 @@
 const socket = io('ws://localhost:5000');
 
-import './style.scss'
+import './index.scss'
 // import './menu.scss'
 import Person from './modules/Person.js'
 import Menu from "./modules/Menu.js";

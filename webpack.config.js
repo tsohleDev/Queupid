@@ -4,6 +4,10 @@ const path = require("path");
 
 module.exports = {
   mode: 'development',
+  entry: {
+    cllent: './src/index.js',
+    admin: './src/admin.js'
+  },
   module: {
     rules: [
       {
@@ -33,7 +37,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "src", "index.html")
+      filename: 'index.html',
+      template: path.resolve(__dirname, "src", "index.html"),
+      Chunks: ['clent']
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'admin.html',
+      template: path.resolve(__dirname, "src", "admin.html"),
+      chunks: ['admin']
     }),
     new WebpackCdnPlugin({
       modules: [

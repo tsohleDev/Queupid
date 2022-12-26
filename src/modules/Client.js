@@ -1,11 +1,9 @@
-import male from '../../images/male.svg'
-
-class Person {
-    constructor(clientInfo){
+class Client {
+    constructor(clientInfo, clientSide, node){
         this.client = clientInfo
+        this.clientSide = clientSide
+        this.node = node
     }
-
-    node = document.querySelector('.clients')
 
     append() {
         const char = male
@@ -18,10 +16,15 @@ class Person {
 
         const name = document.createElement('h2')
         name.innerHTML = this.client.name
-        container.appendChild(name)
+
+        if (!this.clientSide) {
+            const button = document.createElement('button')
+            name.innerHTML = ':'
+            container.appendChild(button)
+        }
 
         this.node.appendChild(container)
     }
 }
 
-export default Person
+export default Client

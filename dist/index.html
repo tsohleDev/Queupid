@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
     <title>Document</title>
-<script defer src="/main.js"></script></head>
+<script defer src="/cllent.js"></script><script defer src="/admin.js"></script></head>
 <body>
     <header>
         <Nav class="navigation">
@@ -22,7 +22,7 @@
             <button>Hi Tsohle</button>
             
             <nav>
-                <a href=""><img src="/2618067a12de4016e51f.svg" alt="">Home</a>
+                <a href="./admin.html"><img src="/2618067a12de4016e51f.svg" alt="">Home</a>
                 <a href=""><img src="/1e5025aa156b37da4685.svg" alt="">Get cut</a> 
                 <a href=""><img id="razor" src="/4e8854d0c319b11409cc.svg" alt="">About</a>
             </nav>
@@ -48,7 +48,7 @@
                 <textarea id="request" type="text" placeholder="what extra thing would you want 'e.g Dye'"></textarea>
             </form>
 
-            <button type="" id="join-qeueu" class="main-button">Queue</button>
+            <button id="join-qeueu" class="main-button">Queue</button>
         </section>
 
         <section id="queue">
@@ -59,6 +59,8 @@
             </div>
 
             <div class="clients"></div>
+
+            <button id="forfit-qeueu" class="main-button">Forfit</button>
         </section>
         
         <section id="about">
