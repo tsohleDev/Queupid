@@ -22,15 +22,20 @@ menuButton.addEventListener('click', () => {
 })
 
 const join = document.querySelector('#join')
-const pageNavigator = new Menu(join, current, false, false)
+let pageNavigator = null
 document.querySelector('#get-cut').addEventListener('click', () => {
+  pageNavigator = new Menu(join, current, false, false)
   pageNavigator.toggle(true)
   imagebackground = false
   current = join
 })
 
 const inputs = document.querySelectorAll('#barber, #haircut, #request')
+const queue = document.querySelector('#queue')
 document.querySelector('#join-qeueu').addEventListener('click', () => {
+  console.log('hello world')
+  pageNavigator = new Menu(queue, current, false, false)
+  pageNavigator.toggle(true)
   const client = {
     name: 'tsohle',
     sex: 1,
@@ -39,8 +44,11 @@ document.querySelector('#join-qeueu').addEventListener('click', () => {
     request: inputs[2]
   }
 
+  current = queue
   socket.emit('client', client)
 })
+
+
 
 socket.on('client', client => {
   const p = new Person(client)
