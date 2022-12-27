@@ -11,7 +11,11 @@ class Navigate{
 
     static to(parent, child) {
         parent.appendChild(child)
-        
+        child.render()
+    }
+
+    static toHome() {
+        document.querySelector('#home').style.display = 'flex'
     }
 
     static fromMenu(current, next) {
@@ -23,7 +27,7 @@ class Navigate{
         const home = document.querySelector('#home')
         home.style.display = 'none'
 
-        const login = new LogIn(main, true)
+        const login = new LogIn(main, false)
         login.render()
     }
 

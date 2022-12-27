@@ -22,6 +22,8 @@ class Input {
         const label = document.createElement('label')
         label.setAttribute('for', this.field)
         label.textContent = this.label
+
+        this.message.style.display = 'none'
         
         this.input.setAttribute('placeholder', this.placeholder)
         this.input.setAttribute('placeholder', this.placeholder)
@@ -42,6 +44,7 @@ class Input {
 
     alert = (text) => {
         this.message.innerText = text
+        this.message.style.display = text ? 'block' : 'none'
     }
 }
 

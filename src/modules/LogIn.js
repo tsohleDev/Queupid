@@ -1,14 +1,24 @@
 import Input from './Input.js'
 import Navigate from './Navigate.js'
 
+import Logo from '../../images/logo.svg'
+
 class LogIn{
     constructor(parent, register){
         this.parent = parent
         this.register = register
         this.node = document.createElement('section')
+        this.node.setAttribute('id', 'register')
     }
 
     render() {
+        const header = document.querySelector('header')
+        header.style.display = 'none'
+
+        const img = document.createElement('img')
+        img.src = Logo
+        this.node.append(img)
+
         const inputs = this.register ? [
             [this.node, 'Username', 'username', 'Your name'],
             [this.node, 'First Name', 'firstname', 'Your firstname'],
@@ -44,29 +54,37 @@ class LogIn{
 
             const data = form.reduce((client, input) => {
                 let [key, value] = input.value
+
+                if (this.register) {
                 if (!valid) { return client }
 
                 valid = this.#validate(key, value, input.alert)
-                if (key === 'confirm-password') { 
-                    confirm = value
-                    return client 
+                    if (key === 'confirm-password') { 
+                        confirm = value
+                        return client 
+                    }
+                    
+                    if (key === 'cellphone') { key = 'cell' }
+                    else if (key === 'password') { 
+                        password = value
+                        key = 'secret' 
+                    }
+                    else if (key === 'gender') { key = 'sex' }
                 }
-                
-                if (key === 'cellphone') { key = 'cell' }
-                else if (key === 'password') { 
-                    password = value
-                    key = 'secret' 
-                }
-                else if (key === 'gender') { key = 'sex' }
-                
                 client[key] = value
 
                 return client
             }, {})
 
-            if (valid) { this.#send(data) }
+            if (valid) { 
+                console.log('done');
+                header.style.display = 'block'
+                //this.#send(data) 
+               
+                this.remove()
+                Navigate.toHome()
+            }
         })
-
 
         this.node.appendChild(button)
         this.parent.appendChild(this.node)
@@ -74,7 +92,7 @@ class LogIn{
 
     remove() {
         Navigate.removeAllChildNodes(this.node)
-        Navigate.removeAllChildNodes(this.parent)
+        this.parent.removeChild(this.node);
     }
 
     #validate(label, input, callback) {
@@ -105,7 +123,8 @@ class LogIn{
     }
 
     async #send (data) {
-            const response = await fetch('/register', {
+            const url = this.register ? '/register' : '/login'
+            const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {

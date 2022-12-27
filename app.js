@@ -9,17 +9,6 @@ var pg = require('pg');
 var conString = "postgres://vsieuphf:FzhZMmLabj9DV8EZLow8SzXorXqnsiQL@satao.db.elephantsql.com/vsieuphf" //Can be found in the Details page
 
 var client = new pg.Client(conString);
-client.connect(function(err) {
-  if(err) { return console.error('could not connect to postgres', err); }
-
-  client.query('SELECT NOW() AS "theTime"', (err, result) => {
-    if(err) { return console.error('error running query', err); }
-
-    console.log(result.rows[0].theTime);
-    // >> output: 2018-08-23T14:02:57.117Z
-    client.end();
-  });
-});
 
 const queue = []
 const io = require('socket.io')(http, { cors: { origin: "*" } });
@@ -29,11 +18,55 @@ app.use(express.json());
 
 app.post('/register', function(req, res) {
   const data = req.body
-  res.send(data)
 
-  console.log(data);
+  client.connect((err) => {
+    if(err) { return console.error('could not connect to postgres', err); }
+  
+    client.query(`
+        INSERT INTO cuttingedge (id, username, firstname, lastname, secret, cell, email, age, sex)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
+      `, [data.name, data.username, data.first, data.firstname, data.lastname, data.secret, data.cell, data.email, data.age, data.sex], (err, res) => {
+        if (err) {
+          console.error('Error inserting row:', err);
+          return;
+        }
+
+        console.log(`${data.name} registered`);
+        client.end();
+    });
+  });
+
+  res.send(200)
 });
 
+app.post('/login', function(req, res) {
+  const data = req.body
+  const {name, secret} = data
+
+  client.connect((err) => {
+    if(err) { return console.error('could not connect to postgres', err); }
+  
+    client.query(`SELECT * FROM "public"."cuttingedge"
+        WHERE username = $1 AND secret = $2
+      `, [name. secret], (err, res) => {
+        if (err) {
+          console.error('Error inserting row:', err);
+          return;
+        }
+        
+        if (res.rowCount > 0) {
+          console.log('Name and password combination exists in the database.');
+        } else {
+          console.log('Name and password combination does not exist in the database.');
+        }
+        
+        console.log(`${data.name} loged in`);
+        client.end();
+    });
+  });
+
+  res.send(200)
+});
 
 io.on('connection', (socket) => {
   console.log('a user connected');
