@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <Nav class="navigation">
+            <img id="logo" src="../images/logo.svg" alt="cutting edge">
+
+            <button id="menu">
+                <span class="icon-bar top"></span>
+                <span class="icon-bar middle"></span>
+                <span class="icon-bar bottom"></span>
+            </button>
+        </Nav>
+
+        <section class="menu">
+            <button>Hi Tsohle</button>
+            
+            <nav>
+                <a href="./admin.html"><img src="../images/comb.svg" alt="">Home</a>
+                <a href=""><img src="../images/clipper.svg" alt="">Get cut</a> 
+                <a href=""><img id="razor" src="../images/razor.svg" alt="">About</a>
+            </nav>
+            
+            <div class="line-betwen"></div>
+        </section>
+    </header>
+
+    <main>
+        <section id="home">
+            <button id="get-cut" class="main-button">Get Cut</button>
+        </section>
+
+        <section id="join">
+            <form id="client">
+                <label for="barber">Barber</label>
+                <input id="barber" type="text" placeholder="name of barber">
+
+                <label for="barber">Style</label>
+                <input id="haircut" type="text" placeholder="hair Style you want">
+
+                <label for="barber">Special Request</label>
+                <textarea id="request" type="text" placeholder="what extra thing would you want 'e.g Dye'"></textarea>
+            </form>
+
+            <button id="join-qeueu" class="main-button">Queue</button>
+        </section>
+
+        <section id="queue">
+            <div>
+                <img src="../images/right-seat.svg" alt="">
+                <img src="../images/center_seat.svg" alt="">
+                <img src="../images/left-seat.svg" alt="">
+            </div>
+
+            <div class="clients"></div>
+
+            <button id="forfit-qeueu" class="main-button">Forfit</button>
+        </section>
+        
+        <section id="about">
+            <h1>We offer the best</h1>
+
+            <p>De disruptif manger et aussi comme même elle révolution manger du coup fais chier aucun évidemment.
+                Le client est très important merci, le client sera suivi</p>
+
+            <img src="../images/2022-04-19 1.svg" alt="barber seats">
+
+            <p>De disruptif manger et aussi comme même elle révolution manger du coup fais chier aucun évidemment.
+                Le client est très important merci, le client sera suivi par le client. Énée n'a pas de justice, pas de résultat, pas de ligula, et la vallée veut la sauce. Morbi mais qui veut vendre une couche de contenu triste d'internet.</p>
+
+            <img src="../images/chairs 1.svg" alt="">
+
+            <p>De disruptif manger et aussi comme même elle révolution manger du coup fais chier aucun évidemment.
+                Le client est très important merci, le client sera suivi par le client. Énée n'a pas de justice, 
+                pas de résultat, pas de ligula, et la vallée veut la sauce. Morbi mais qui veut vendre une couche de 
+                contenu triste d'internet. Être ivre maintenant, mais ne pas être ivre maintenant, mon urne est d'une 
+                grande beauté, mais elle n'est pas aussi bien faite que dans un livre. Mécène dans la vallée de l'orc, dans l'élément même. 
+                Certaines des exigences faciles du budget, qu'il soit beaucoup de temps pour dignissim et. Je ne m'en fais pas chez moi, ça 
+                va être moche dans le vestibule. Mais aussi des protéines de Pour avant la fin de la semaine, qui connaît le poison, le résultat.</p>
+        </section>
+    </main>
+</body>
+</html>

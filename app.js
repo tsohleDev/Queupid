@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
+const bodyParser = require('body-parser');
 
 const path = require('path')
 
@@ -24,9 +25,13 @@ const queue = []
 const io = require('socket.io')(http, { cors: { origin: "*" } });
 
 app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.json());
 
-app.get('/admin', function(req, res) {
-  res.sendFile(path.join(__dirname, 'dist/admin.html'));
+app.post('/register', function(req, res) {
+  const data = req.body
+  res.send(data)
+
+  console.log(data);
 });
 
 
