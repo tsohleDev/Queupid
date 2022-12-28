@@ -1,24 +1,105 @@
-import Person from "./Person";
+import Client from "./Client"
+import Navigate from "./Navigate"
+import Chair from "./Chair"
 
 class Queue {
-  constructor(){
+  constructor(injections){
+    this.injections = injections
+    this.parent = document.querySelector('main')
+    this.node = document.createElement('section')
+    this.node.setAttribute('id', 'queue')
+
+    this.chairsContainer = document.createElement('div')
+    this.chairsContainer.classList.add('chairs')
+
+    this.one = new Chair(this.chairsContainer)
+    this.two = new Chair(this.chairsContainer)
+    this.three = new Chair(this.chairsContainer)
+    this.chairs = [this.one, this.two, this.three]
   }
 
-  list = []
+  list = [{
+    name: 'coder',
+    style: 'fade',
+    sex: '1',
+    request: '',
+    position: 0,
+    cutting: true
+  }, {
+    name: 'coder',
+    style: 'fade',
+    sex: '1',
+    request: '',
+    position: 0,
+    cutting: true
+  }, {
+    name: 'coder',
+    style: 'fade',
+    sex: '1',
+    request: '',
+    position: 0,
+    cutting: true
+  }, {
+    name: 'coder',
+    style: 'fade',
+    sex: '1',
+    request: '',
+    position: 0,
+    cutting: true
+  }, {
+    name: 'coder',
+    style: 'fade',
+    sex: '1',
+    request: '',
+    position: 0,
+    cutting: true
+  } ]
+  
+  render() {
 
-  initiate() {
-    const container = document.querySelector('.clients')
-    this.#removeAllChildNodes(container)
+    this.node.appendChild(this.chairsContainer)
+
+    for (let i = 0; i < this.chairs.length; i++) {
+      console.log(this.chairs[i].parent)
+      this.chairs[i].render(i)
+    }
 
     this.list.forEach(element => {
-        const client = new Person(element)
-        client.append()
+        const client = new Client(element, false, this.node)
+        client.render()
     });
+
+    const price = document.createElement('p')
+    price.innerText = 'Cost : R100'
+    this.node.appendChild(price)
+
+    const button = document.createElement('button')
+    button.textContent = 'Forfit'
+    button.addEventListener('click', () => {
+       //remove client from websocket
+       Navigate.switchToHome(this)
+    })
+
+    this.node.appendChild(button)
+    this.parent.appendChild(this.node)
   }
 
-  #removeAllChildNodes(parent) {
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
+  remove() {
+    Navigate.removeAllChildNodes(this.chairsContainer)
+    Navigate.removeAllChildNodes(this.node)
+    if (this.parent.querySelector('#queue')) { this.parent.removeChild(this.node) }
+  }
+
+  updateChairs() {
+    const array = this.list.reduce((cutting, info) => {
+      if (info.cutting == true) { cutting.push(info) }
+
+      return info
+    }, [])
+
+    
+    for (let i = 0; i < array.length; i++) {
+      chairs[i].updateChair(array[i])
     }
   }
 }

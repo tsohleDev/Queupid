@@ -24,6 +24,8 @@ class Input {
         label.textContent = this.label
 
         this.message.style.display = 'none'
+
+        if (this.field === 'request') { this.input = document.createElement('textarea') }
         
         this.input.setAttribute('placeholder', this.placeholder)
         this.input.setAttribute('placeholder', this.placeholder)

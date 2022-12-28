@@ -1,11 +1,13 @@
 import clipper from '../../images/clipper.svg'
 import razor from '../../images/razor.svg'
 import comb from '../../images/comb.svg'
+import wash from '../../images/hairwash.svg'
 
 import Navigate from './Navigate'
 
 class Menu {
-    constructor(parent, user){
+    constructor(parent, user, injections){
+        this.injections = injections
         this.node = document.createElement('section')
         this.node.classList.add('menu')
         this.parent = parent
@@ -19,18 +21,23 @@ class Menu {
         logIn.classList.add('login')
 
         logIn.addEventListener('click', () => {
-            Navigate.fromMenu(this.node, 'login')
+            Navigate.fromMenu(this.node, 'login', this.injections)
         })
 
         const navigate = document.createElement('nav')
 
         const keys = ['Home', 'Get Cut', 'Queue','About']
-        const values = [comb, clipper, razor, razor]
+        const values = [comb, clipper, razor, wash]
 
         for (let i = 0; i < keys.length; i++) {
             const linkTag = document.createElement('a')
 
+            linkTag.addEventListener('click', () => {
+                Navigate.fromMenu(this.node, keys[i], this.injections)
+            })
+
             const img = document.createElement('img')
+            img.classList.add(`men${i}`)
             img.src = values[i]
             
 

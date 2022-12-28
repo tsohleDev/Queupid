@@ -41,16 +41,12 @@ class LogIn{
             values.push(input)
             return values
         }, [])
-
-        console.log(form);
-        
         
         const button = document.createElement('button')
         button.textContent = this.register ? 'register' : 'login'
         button.addEventListener('click', () => {
-            //validate that all values are inputed
             let valid = true
-            let password, confirm
+            let password, confirm, confirmNode
 
             const data = form.reduce((client, input) => {
                 let [key, value] = input.value
@@ -69,12 +65,23 @@ class LogIn{
                         password = value
                         key = 'secret' 
                     }
-                    else if (key === 'gender') { key = 'sex' }
+                    else if (key === 'gender') { 
+                        key = 'sex' 
+                        value = value.toLowerCase() === 'male' ? 1 : 0
+                    }
                 }
                 client[key] = value
 
                 return client
             }, {})
+
+
+            if (this.register) {
+                valid = password === confirm
+
+                if (!valid) { confirmNode.alert('password doesn\'t match') }
+                else { confirmNode.alert(null) }
+            }
 
             if (valid) { 
                 console.log('done');
@@ -96,7 +103,6 @@ class LogIn{
     }
 
     #validate(label, input, callback) {
-        console.log('hello');
         if (!input) { 
             callback(`please fill in your ${label}`)
             return false 

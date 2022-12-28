@@ -7,7 +7,7 @@ class Person {
 
     node = document.querySelector('.clients')
 
-    append() {
+    render() {
         const char = male
         const container = document.createElement('div')
         container.classList.add('client-info')
