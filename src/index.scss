@@ -150,6 +150,16 @@ main  {
             width: 60%;
         }
 
+        p {
+            background-color: red;
+            font-size: medium;
+            text-align: center;
+            color: #F8F7F7;
+            width: 100%;
+
+            padding: 1vh 0;
+        }
+
         .input {
             @include flex-column();
             width: 80%;

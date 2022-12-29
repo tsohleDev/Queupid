@@ -66,6 +66,15 @@ class Navigate{
             parent.removeChild(parent.firstChild);
         }
     }
+
+    static isUser(user, client) {
+        const {username, firstname, lastname} = user
+        const {username: name, firstname: first, lastname: last} = client
+
+        if (username === name && firstname === first && lastname === last) { return true }
+
+        return false
+    }
 }
 
 export default Navigate

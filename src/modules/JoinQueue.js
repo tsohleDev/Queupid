@@ -29,30 +29,9 @@ class JoinQueue {
     const button = document.createElement('button')
     button.textContent = 'Queue'
     button.addEventListener('click', () => {
-        let valid = true
-
-        const data = form.reduce((client, input) => {
-            let [key, value] = input.value
-
-            console.log(value);
-            if (key === 'style' && !value) { 
-                valid = false
-                input.alert('please select a hairstyle') 
-            } else if (key === 'style'){
-                valid = true
-                input.alert(null)
-            }
-
-            client[key] = value
-
-            return client
-        }, {})
-
-        if (valid) { 
-            this.#send(data)
-
-            Navigate.switch(false, this, this.injections.queue)
-        }
+      const exists = this.#change(form)
+   
+      if (!exists) { this.#insert(form) }
     })
 
     this.node.appendChild(button)
@@ -64,8 +43,62 @@ class JoinQueue {
     if (this.parent.querySelector('#queue-form')) { this.parent.removeChild(this.node) }
   }
 
-  #send(data) {
+  #insert(form) {
+      const validData = this.#validate(form)
 
+      if (validData[0]) { 
+
+        this.injections.socket.emit('client', validData[1])
+        Navigate.switch(false, this, this.injections.queue)
+      }
+  }
+
+  #change(form) {
+    let contained = false
+
+    const user = this.injections['user']
+    const clients = this.injections['clients']
+    let position = 0
+
+    clients.forEach((client, i) => {
+      if (Navigate.isUser(user, client)) {
+        position = i
+        contained = true
+      }
+    });
+
+    if (!contained) { return false }
+
+    const validData = this.#validate(form)
+
+    if (validData[0]) {
+      this.injections.socket.emit('update', validData[1])
+      Navigate.switch(false, this, this.injections.queue)
+
+      return true
+    }
+  }
+
+  #validate(form) {
+    let valid = true
+
+    const data = form.reduce((client, input) => {
+          let [key, value] = input.value
+
+          if (key === 'style' && !value) { 
+              valid = false
+              input.alert('please select a hairstyle') 
+          } else if (key === 'style'){
+              valid = true
+              input.alert(null)
+          }
+
+          client[key] = value
+
+          return client
+    }, this.injections.user)
+
+    return [valid, data]
   }
 }
 

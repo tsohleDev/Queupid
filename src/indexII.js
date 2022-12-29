@@ -67,6 +67,6 @@ socket.on('client', client => {
 });
 
 socket.on('clients', array => {
-  clients.list = array
+  clients.clients = array
   clients.initiate()
 });

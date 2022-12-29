@@ -1,4 +1,4 @@
-// const socket = io('ws://localhost:5000');
+const socket = io('ws://localhost:5000');
 
 import './index.scss'
 import Menu from './modules/Menu';
@@ -16,11 +16,23 @@ const home = document.querySelector('#home')
 //buttons
 const menuButton = document.querySelector('#menu')
 const toJoin = document.querySelector('#join')
-let current = home
 let onMenu = false
 
-const injections = {}
-const menuNode = new Menu(header, null, injections) 
+
+let clients = []
+
+const errorcodes = {
+  23505: 'duplicate user name',
+  42601: 'some arguments missing',
+}
+
+let user = null
+if (localStorage.getItem('CE-user')) {user = JSON.parse(localStorage.getItem('CE-user'))}
+console.log(user);
+
+
+const injections = { 'socket': socket, 'clients': clients, 'user':  user, 'errors': errorcodes}
+const menuNode = new Menu(header, injections) 
 injections['menu'] = menuNode
 const queue = new Queue(injections)
 injections['queue'] = queue
@@ -28,6 +40,8 @@ const queueform = new JoinQueue(injections)
 injections['queueForm'] = queueform
 const about = new About()
 injections['about'] = about
+
+
 
 menuButton.addEventListener('click', () => { 
     if (!onMenu) { Navigate.from(main, 'flex', menuNode.node, menuNode, true) }
@@ -40,38 +54,14 @@ toJoin.addEventListener('click', () => {
     Navigate.switch(true, queueform) 
 })
 
-// const headerNode = new Header('Ntsako', header);
-// headerNode.render()
-// headerNode.hide()
+socket.on('client', client => {
+    injections['clients'].push(client)
+    queue.appendClient(client)
 
-// const main = document.querySelector('main')
-// const home = document.querySelector('#a-home')
-// const queue = document.createElement('section')
-// const portfolio = document.createElement('section')
-// let current = null
-
-// const toManage = document.querySelector('#manage')
-// toManage.addEventListener('click', () => {
-//     Navigate.from(home)
-//     headerNode.show()
-    
-//     Navigate.to(main, queue)
-// })
-
-// const toPortfolio = document.querySelector('#')
-// toManage.addEventListener('click', () => {
-//     Navigate.from(home)
-//     headerNode.show()
-    
-//     main.appendChild(queue)
-// })
-
-// socket.on('client', client => {
-//     const c = new Client(client, false, queue)
-//     p.append()
-// });
+    console.log('got client', injections['clients']);
+});
   
-// socket.on('clients', array => {
-//     clients.list = array
-//     clients.initiate()
-// });
+socket.on('clients', array => {
+    console.log('all', array);
+    clients = array
+});

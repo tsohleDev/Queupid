@@ -3,7 +3,8 @@ import Female from '../../images/female.svg'
 import Navigate from './Navigate'
 
 class Client {
-    constructor(clientInfo, clientSide, parent){
+    constructor(clientInfo, clientSide, parent, injections){
+        this.injections = injections
         this.client = clientInfo
         this.clientSide = clientSide
         this.parent = parent
@@ -12,6 +13,7 @@ class Client {
     }
 
     render() {
+        if (Navigate.isUser(this.injections['user'], this.client)) {this.node.style.backgroundColor = '#F9B339'}
         const avatar = this.client.sex ? Male : Female
         
         const img = document.createElement('img')
@@ -19,7 +21,7 @@ class Client {
         this.node.appendChild(img)
 
         const name = document.createElement('h2')
-        name.innerHTML = this.client.name
+        name.innerHTML = this.client.username
         this.node.appendChild(name)
 
         if (!this.clientSide) {

@@ -6,18 +6,19 @@ import wash from '../../images/hairwash.svg'
 import Navigate from './Navigate'
 
 class Menu {
-    constructor(parent, user, injections){
+    constructor(parent, injections){
         this.injections = injections
         this.node = document.createElement('section')
         this.node.classList.add('menu')
         this.parent = parent
 
-        this.#create(user)
+        this.#create()
     }
 
-    #create(user) {
+    #create() {
+        console.log('hello there');
         const logIn = document.createElement('button')
-        logIn.textContent = user ? `Hi ${user.name}` : 'login'
+        logIn.textContent = this.injections['user'] ? `Hi ${this.injections['user'].username}` : 'login'
         logIn.classList.add('login')
 
         logIn.addEventListener('click', () => {

@@ -4,7 +4,8 @@ import Navigate from './Navigate.js'
 import Logo from '../../images/logo.svg'
 
 class LogIn{
-    constructor(parent, register){
+    constructor(parent, register, injections){
+        this.injections = injections
         this.parent = parent
         this.register = register
         this.node = document.createElement('section')
@@ -12,12 +13,17 @@ class LogIn{
     }
 
     render() {
+        this.parent.style.padding = '0'
         const header = document.querySelector('header')
         header.style.display = 'none'
 
         const img = document.createElement('img')
         img.src = Logo
         this.node.append(img)
+
+        const p = document.createElement('p')
+        this.node.appendChild(p)
+        p.style.display = 'none'
 
         const inputs = this.register ? [
             [this.node, 'Username', 'username', 'Your name'],
@@ -44,30 +50,33 @@ class LogIn{
         
         const button = document.createElement('button')
         button.textContent = this.register ? 'register' : 'login'
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
             let valid = true
             let password, confirm, confirmNode
+            let username = null
 
-            const data = form.reduce((client, input) => {
+            let data = form.reduce((client, input) => {
                 let [key, value] = input.value
 
                 if (this.register) {
-                if (!valid) { return client }
-
-                valid = this.#validate(key, value, input.alert)
-                    if (key === 'confirm-password') { 
-                        confirm = value
-                        return client 
-                    }
-                    
-                    if (key === 'cellphone') { key = 'cell' }
-                    else if (key === 'password') { 
-                        password = value
-                        key = 'secret' 
-                    }
-                    else if (key === 'gender') { 
-                        key = 'sex' 
-                        value = value.toLowerCase() === 'male' ? 1 : 0
+                    if (!valid) { return client }
+                        valid = this.#validate(key, value, input.alert)
+                        if (key === 'confirm-password') { 
+                            confirm = value
+                            confirmNode = input
+                            return client 
+                        }
+                        
+                        if (key === 'cellphone') { key = 'cell' }
+                        else if (key === 'password') { 
+                            password = value
+                            key = 'secret' 
+                        }
+                        else if (key === 'gender') { 
+                            key = 'sex' 
+                            value = value.toLowerCase() === 'male' ? 1 : 0
+                        } else if (key === 'username') {
+                        username = [input, value]
                     }
                 }
                 client[key] = value
@@ -75,6 +84,8 @@ class LogIn{
                 return client
             }, {})
 
+
+            console.log('check', data);
 
             if (this.register) {
                 valid = password === confirm
@@ -84,20 +95,46 @@ class LogIn{
             }
 
             if (valid) { 
-                console.log('done');
-                header.style.display = 'block'
-                //this.#send(data) 
+                const res = await this.#send(data) 
                
-                this.remove()
-                Navigate.toHome()
+                console.log('response', res);
+                console.log(res.status);
+                if (res.status === 200) {
+                    if (!this.register) { data = await res.json()}
+  
+                    header.style.display = 'block'
+                    this.#store(data)
+                    this.remove()
+                    Navigate.toHome()
+                } else if (this.register) {
+                    const n = Math.floor(Math.random() * 100000)
+                    username[0].alert('username already taken try different one i.e ' + username[1]  + n)
+                } else {
+                    p.style.display = 'block'
+                    p.innerText = 'Password username combination unrecognized'
+                }
             }
         })
 
         this.node.appendChild(button)
+
+        if (!this.register) {
+            const link = document.createElement('a')
+            link.innerText = 'create a new account'
+            this.node.appendChild(link)
+
+            link.addEventListener('click', () => {
+                this.remove()   
+                this.register = true
+                this.render()
+            })
+        }
+
         this.parent.appendChild(this.node)
     }
 
     remove() {
+        this.parent.style.padding = '15vh 0 0 0'
         Navigate.removeAllChildNodes(this.node)
         this.parent.removeChild(this.node);
     }
@@ -128,18 +165,25 @@ class LogIn{
         return true
     }
 
-    async #send (data) {
-            const url = this.register ? '/register' : '/login'
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            })
+    #store(data) {
+        if (data.secret) { delete data.secret }
 
-            const text = await response.text()
-            console.log(text);
+        localStorage.setItem('CE-user', JSON.stringify(data))
+        this.injections['user'] = data
+    }
+
+    async #send (data) {
+        const url = this.register ? '/register' : '/login'
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+
+        console.log('status', response.status );
+        return response
     }
 }
 

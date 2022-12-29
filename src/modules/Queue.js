@@ -4,6 +4,7 @@ import Chair from "./Chair"
 
 class Queue {
   constructor(injections){
+    this.clients = injections['clients']
     this.injections = injections
     this.parent = document.querySelector('main')
     this.node = document.createElement('section')
@@ -12,60 +13,27 @@ class Queue {
     this.chairsContainer = document.createElement('div')
     this.chairsContainer.classList.add('chairs')
 
+    this.clientContainer = document.createElement('div')
+    this.clientContainer.classList.add('clients')
+
     this.one = new Chair(this.chairsContainer)
     this.two = new Chair(this.chairsContainer)
     this.three = new Chair(this.chairsContainer)
     this.chairs = [this.one, this.two, this.three]
   }
-
-  list = [{
-    name: 'coder',
-    style: 'fade',
-    sex: '1',
-    request: '',
-    position: 0,
-    cutting: true
-  }, {
-    name: 'coder',
-    style: 'fade',
-    sex: '1',
-    request: '',
-    position: 0,
-    cutting: true
-  }, {
-    name: 'coder',
-    style: 'fade',
-    sex: '1',
-    request: '',
-    position: 0,
-    cutting: true
-  }, {
-    name: 'coder',
-    style: 'fade',
-    sex: '1',
-    request: '',
-    position: 0,
-    cutting: true
-  }, {
-    name: 'coder',
-    style: 'fade',
-    sex: '1',
-    request: '',
-    position: 0,
-    cutting: true
-  } ]
   
   render() {
+    console.log(this.clients);
 
     this.node.appendChild(this.chairsContainer)
+    this.node.appendChild(this.clientContainer)
 
     for (let i = 0; i < this.chairs.length; i++) {
-      console.log(this.chairs[i].parent)
       this.chairs[i].render(i)
     }
 
-    this.list.forEach(element => {
-        const client = new Client(element, false, this.node)
+    this.clients.forEach(element => {
+        const client = new Client(element, false, this.clientContainer, this.injections)
         client.render()
     });
 
@@ -86,22 +54,31 @@ class Queue {
 
   remove() {
     Navigate.removeAllChildNodes(this.chairsContainer)
+    Navigate.removeAllChildNodes(this.clientContainer)
     Navigate.removeAllChildNodes(this.node)
     if (this.parent.querySelector('#queue')) { this.parent.removeChild(this.node) }
   }
 
   updateChairs() {
-    const array = this.list.reduce((cutting, info) => {
+    const array = this.clients.reduce((cutting, info) => {
       if (info.cutting == true) { cutting.push(info) }
 
       return info
     }, [])
-
     
     for (let i = 0; i < array.length; i++) {
       chairs[i].updateChair(array[i])
     }
   }
+
+  appendClient(client) {
+    if (this.node.firstChild) {
+      const node = new Client(client, false, this.clientContainer, this.injections)
+      node.render()
+    }
+  }
+
+
 }
 
 export default Queue
