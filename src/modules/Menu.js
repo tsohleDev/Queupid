@@ -16,7 +16,6 @@ class Menu {
     }
 
     #create() {
-        console.log('hello there');
         const logIn = document.createElement('button')
         logIn.textContent = this.injections['user'] ? `Hi ${this.injections['user'].username}` : 'login'
         logIn.classList.add('login')
