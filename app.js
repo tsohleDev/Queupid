@@ -15,7 +15,7 @@ const { connect } = require('http2');
 const { cli } = require('webpack-dev-server');
 var conString = "postgres://vsieuphf:FzhZMmLabj9DV8EZLow8SzXorXqnsiQL@satao.db.elephantsql.com/vsieuphf" //Can be found in the Details page
 
-const queue = []
+let queue = []
 
 const io = require('socket.io')(http, { cors: { origin: "*" } });
 
@@ -75,14 +75,46 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   io.emit('clients', queue );
+  console.log(queue);
 
   socket.on('client', (client) => {
       queue.push(client);
 
       console.log('insert', client.username)
-      console.log(queue);
+      console.log('queue', queue);
 
       io.emit('client', client);   
+  });
+
+  socket.on('remove', (client) => {
+    queue = queue.reduce((array, element) => {
+      if (element.username !== client.username) {
+        array.push(element)
+      }
+
+      return array;
+    }, []);
+
+    console.log('remove', client.username)
+    io.emit('clients', queue);   
+  });
+
+  socket.on('drop', (client) => {
+    const index = queue.indexOf(elment => {
+      return elment.username === client.username
+    })
+
+    console.log('position', index);
+    if (index !== queue.length) {
+      const dum = queue[index + 1]
+      queue[index+1] = queue[index]
+      queue[index] = dum
+
+      console.log('swap', client.username, 'with', queue[index].username)
+      console.log('queue', queue);
+
+      io.emit('clients', queue); 
+    }  
   });
 
   socket.on('update', client => {
@@ -102,7 +134,6 @@ io.on('connection', (socket) => {
 });
 
 http.listen(process.env.PORT || 5000, () => console.log('listening on http://localhost:5000') );
-
 // const port = process.env.PORT || 5000;
 
 // app.listen(port, () => {

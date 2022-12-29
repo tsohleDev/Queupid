@@ -4,7 +4,6 @@ import Chair from "./Chair"
 
 class Queue {
   constructor(injections){
-    this.clients = injections['clients']
     this.injections = injections
     this.parent = document.querySelector('main')
     this.node = document.createElement('section')
@@ -22,8 +21,10 @@ class Queue {
     this.chairs = [this.one, this.two, this.three]
   }
   
+  clients = [] 
+  
   render() {
-    console.log(this.clients);
+    this.clients = this.injections['clients']
 
     this.node.appendChild(this.chairsContainer)
     this.node.appendChild(this.clientContainer)
@@ -33,7 +34,8 @@ class Queue {
     }
 
     this.clients.forEach(element => {
-        const client = new Client(element, false, this.clientContainer, this.injections)
+      console.log('this', this.node);
+        const client = new Client(element, false, this.clientContainer, this.injections, this.node)
         client.render()
     });
 
@@ -73,7 +75,7 @@ class Queue {
 
   appendClient(client) {
     if (this.node.firstChild) {
-      const node = new Client(client, false, this.clientContainer, this.injections)
+      const node = new Client(client, false, this.clientContainer, this.injections, this.node)
       node.render()
     }
   }

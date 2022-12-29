@@ -18,6 +18,10 @@ class Input {
         return [this.field, this.input.value]
     }
 
+    set value(string) {
+        this.input.value = string
+    }
+
     render() {
         const label = document.createElement('label')
         label.setAttribute('for', this.field)

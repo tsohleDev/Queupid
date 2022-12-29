@@ -33,9 +33,8 @@ class Navigate{
         document.querySelector('#home').style.display = 'flex'
     }
 
-    static fromMenu(current, next, injections = null) {
+    static fromMenu(current, next, injections) {
         current.style.display = 'none'
-        console.log(injections);
 
         const main = document.querySelector('main')
         main.style.display = 'block'
@@ -46,9 +45,10 @@ class Navigate{
         injections['queueForm'].remove()
         injections['queue'].remove()
         injections['about'].remove()
+        injections['portfolio'].remove()
 
         if (next === 'login') {
-            const login = new LogIn(main, false)
+            const login = new LogIn(main, false, injections)
             login.render()
         } else if (next === 'Home') {
             home.style.display = 'flex'

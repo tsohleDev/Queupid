@@ -3,7 +3,8 @@ import Female from '../../images/female.svg'
 import Navigate from './Navigate'
 
 class Client {
-    constructor(clientInfo, clientSide, parent, injections){
+    constructor(clientInfo, clientSide, parent, injections, grandParent){
+        this.grandParent = grandParent
         this.injections = injections
         this.client = clientInfo
         this.clientSide = clientSide
@@ -27,6 +28,13 @@ class Client {
         if (!this.clientSide) {
             const button = document.createElement('button')
             button.innerHTML = '<i class="fa-solid fa-ellipsis-vertical"></i>'
+
+            button.addEventListener('click', () => {
+                this.grandParent.remove()
+                console.log(this.injections['portfolio']);
+                this.injections['portfolio'].render()
+            })
+
             this.node.appendChild(button)
         }
 

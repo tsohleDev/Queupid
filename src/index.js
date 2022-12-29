@@ -7,6 +7,7 @@ import Navigate from "./modules/Navigate.js";
 import JoinQueue from './modules/JoinQueue';
 import Queue from './modules/Queue'
 import About from './modules/About';
+import Portfolio from './modules/Portfolio';
 
 
 const main = document.querySelector('main')
@@ -26,7 +27,7 @@ const errorcodes = {
   42601: 'some arguments missing',
 }
 
-let user = null
+let user = {username: 'N/A'}
 if (localStorage.getItem('CE-user')) {user = JSON.parse(localStorage.getItem('CE-user'))}
 console.log(user);
 
@@ -40,8 +41,8 @@ const queueform = new JoinQueue(injections)
 injections['queueForm'] = queueform
 const about = new About()
 injections['about'] = about
-
-
+const portfolio = new Portfolio(injections)
+injections['portfolio'] = portfolio
 
 menuButton.addEventListener('click', () => { 
     if (!onMenu) { Navigate.from(main, 'flex', menuNode.node, menuNode, true) }
@@ -62,6 +63,11 @@ socket.on('client', client => {
 });
   
 socket.on('clients', array => {
-    console.log('all', array);
-    clients = array
+    injections['clients'] = array
+    console.log('new clients', injections['clients']);
+    // qu
+    // array.forEach(element => {
+    //     queue.appendClient(client)
+    // });
+    
 });
