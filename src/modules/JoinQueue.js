@@ -49,6 +49,8 @@ class JoinQueue {
       if (validData[0]) { 
 
         this.injections.socket.emit('client', validData[1])
+        
+        this.#inform(form)
         Navigate.switch(false, this, this.injections.queue)
       }
   }
@@ -73,6 +75,8 @@ class JoinQueue {
 
     if (validData[0]) {
       this.injections.socket.emit('update', validData[1])
+
+      this.#inform(form)
       Navigate.switch(false, this, this.injections.queue)
 
       return true
@@ -99,6 +103,16 @@ class JoinQueue {
     }, this.injections.user)
 
     return [valid, data]
+  }
+
+  #inform(form) {
+    const data = form.reduce((array, input) => {
+      array.push(input.value)
+
+      return array
+    }, [])
+
+    this.injections['details'] = data
   }
 }
 

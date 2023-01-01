@@ -11,11 +11,11 @@
 
 @mixin button {
     background-color: #ebab3b;
-    padding: 2vh 2vw;
-    font-size: 5vw;
-    // margin: 10vh;
+    padding: 2vh 10vw;
+    font-size: 8vw;
+    border-radius: 30px;
 }
-    
+
 * {
     margin: 0;
 }
@@ -68,10 +68,10 @@ header {
         align-items: center;
     
         button {
-            font-size: 12vw;
+            font-size: 9vw;
             color: #F8F7F7;
             background-color: #000;
-            padding: 0 5vw;
+            padding: 2vh 5vw;
             margin: 5vh 0 0 0;
         }
     
@@ -101,7 +101,7 @@ header {
                     height: 8vh;
                 }
     
-                font-size: 8vh;
+                font-size: 16vw;
                 padding: 3vh 0;
                 color: #B48100;
                 text-decoration: underline;
@@ -200,7 +200,7 @@ main  {
 
         .input {
             @include column-center();
-            width: 80%;
+            width: 95%;
             margin: 2vh  0 0 0;
 
             label {
@@ -218,7 +218,7 @@ main  {
                 padding: 1vh 0;
             }
 
-            input, textarea {
+            input, textarea, select{
                 width: 100%;
                 height: 7vh;
 
@@ -238,7 +238,7 @@ main  {
             @include button();
 
             margin: 5vh 0;
-            padding: 2vh 4vw;
+            // padding: 2vh 4vw;
         }
     }
 
@@ -267,12 +267,13 @@ main  {
 
 
             img {
-                height: 17vh;
+                height: 11vh;
+                align-self: center;
             }
 
             h2 {
                 align-self: center;
-                padding: 0 10vw;
+                padding: 0;
             }
 
             button {
@@ -283,6 +284,10 @@ main  {
 
                 i {
                     color: #F9B339;
+                }
+
+                .black {
+                    color: #000;
                 }
             }
         }
@@ -345,19 +350,123 @@ main  {
             }
         }
 
-        div {
+        .buttons {
             display: flex;
 
-
             button {
-                @include button();
-
+                background-color: #ebab3b;
+                padding: 1vh 2vw;
+                font-size: 5vw;
+                border: 2px solid #f1f50f;
                 width: 25vw;
                 margin: 10vh 5vw 3vh;
             }
 
             .finish {
                 margin: 3vh 0 10vh;
+            }
+        }
+
+        .admin-buttons {
+            display: flex;
+
+            button {
+                width: 27vw;
+                font-size: medium;
+                margin: 0 4vw 5vh;
+                background-color: #a1e9a7;
+                border: 2px solid #00e0a8;
+                color: #272615;
+                font-weight: 700;
+                padding: 1vh 0;
+            }
+        }
+    }
+
+    #loading {
+        .ring
+        {
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            width:150px;
+            height:150px;
+            background:transparent;
+            border:3px solid #3c3c3c;
+            border-radius:50%;
+            text-align:center;
+            line-height:150px;
+            font-family:sans-serif;
+            font-size:20px;
+            color:#fff000;
+            letter-spacing:4px;
+            text-transform:uppercase;
+            text-shadow:0 0 10px #fff000;
+            box-shadow:0 0 20px rgba(0,0,0,.5);
+        }
+
+        .ring:before
+        {
+            content:' ';
+            position:absolute;
+            top:-3px;
+            left:-3px;
+            width:100%;
+            height:100%;
+            border:3px solid transparent;
+            border-top:3px solid #fff000;
+            border-right:3px solid #fff000;
+            border-radius:50%;
+            animation:animateC 2s linear infinite;
+        }
+
+        span
+        {
+            display:block;
+            position:absolute;
+            top:calc(50% - 2px);
+            left:50%;
+            width:50%;
+            height:4px;
+            background:transparent;
+            transform-origin:left;
+            animation:animate 2s linear infinite;
+        }
+
+        span:before
+        {
+            content:' ';
+            position:absolute;
+            width:16px;
+            height:16px;
+            border-radius:50%;
+            background:#fff000;
+            top:-6px;
+            right:-8px;
+            box-shadow:0 0 20px #fff000;
+        }
+
+        @keyframes animateC
+        {
+            0%
+            {
+                transform:rotate(0deg);
+            }
+            100%
+            {
+                transform:rotate(360deg);
+            }
+        }
+        @keyframes animate
+        {
+            0%
+            {
+                transform:rotate(45deg);
+            }
+            100%
+            {
+                transform:rotate(405deg);
             }
         }
     }

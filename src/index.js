@@ -8,6 +8,7 @@ import JoinQueue from './modules/JoinQueue';
 import Queue from './modules/Queue'
 import About from './modules/About';
 import Portfolio from './modules/Portfolio';
+import Loading from './modules/Loading';
 
 
 const main = document.querySelector('main')
@@ -33,6 +34,7 @@ console.log(user);
 
 
 const injections = { 'socket': socket, 'clients': clients, 'user':  user, 'errors': errorcodes}
+
 const menuNode = new Menu(header, injections) 
 injections['menu'] = menuNode
 const queue = new Queue(injections)
@@ -43,6 +45,13 @@ const about = new About()
 injections['about'] = about
 const portfolio = new Portfolio(injections)
 injections['portfolio'] = portfolio
+const loading = new Loading(injections)
+injections['loading'] = loading
+
+console.log(user);
+if (user && !user.admin) {
+    toJoin.innerText = 'Manage Queue'
+} 
 
 menuButton.addEventListener('click', () => { 
     if (!onMenu) { Navigate.from(main, 'flex', menuNode.node, menuNode, true) }
@@ -58,16 +67,14 @@ toJoin.addEventListener('click', () => {
 socket.on('client', client => {
     injections['clients'].push(client)
     queue.appendClient(client)
-
-    console.log('got client', injections['clients']);
 });
   
 socket.on('clients', array => {
     injections['clients'] = array
-    console.log('new clients', injections['clients']);
-    // qu
-    // array.forEach(element => {
-    //     queue.appendClient(client)
-    // });
-    
+    queue.updateQueue(array)
 });
+
+socket.on('seats', seats => {
+    injections['seats'] = seats
+    queue.updateChairs(seats)
+})

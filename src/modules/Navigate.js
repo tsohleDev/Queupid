@@ -5,7 +5,10 @@ class Navigate{
         current.style.display = 'none'
     
         // current = next
-        if (sideMenu) { menuNode.append() }
+        if (sideMenu) { 
+            menuNode.append() 
+            menuNode.updateGreetings()
+        }
         next.style.display = display
     }
 
@@ -27,6 +30,17 @@ class Navigate{
     static switchToHome(section) {
         section.remove()
         document.querySelector('#home').style.display = 'flex'
+    }
+
+    static switchToHomePortfolio(injections) {
+        injections['portfolio'].remove()
+        const loading = injections['loading']
+        loading.render()
+
+        setTimeout(() => {
+            loading.remove()
+            Navigate.switch(true, injections['queue'])
+        }, 1500);
     }
 
     static toHome() {

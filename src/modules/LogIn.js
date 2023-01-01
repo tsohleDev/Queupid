@@ -106,6 +106,7 @@ class LogIn{
                     this.#store(data)
                     this.remove()
                     Navigate.toHome()
+                    this.injections['login']
                 } else if (this.register) {
                     const n = Math.floor(Math.random() * 100000)
                     username[0].alert('username already taken try different one i.e ' + username[1]  + n)

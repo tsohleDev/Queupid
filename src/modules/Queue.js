@@ -15,43 +15,86 @@ class Queue {
     this.clientContainer = document.createElement('div')
     this.clientContainer.classList.add('clients')
 
-    this.one = new Chair(this.chairsContainer)
-    this.two = new Chair(this.chairsContainer)
-    this.three = new Chair(this.chairsContainer)
+    this.alert = document.createElement('p')
+
+    this.one = new Chair(this.chairsContainer, this.alert)
+    this.two = new Chair(this.chairsContainer, this.alert)
+    this.three = new Chair(this.chairsContainer, this.alert)
     this.chairs = [this.one, this.two, this.three]
   }
   
   clients = [] 
   
   render() {
-    this.clients = this.injections['clients']
+    this.updateChairs()
+    this.node.appendChild(this.alert)
+    this.alert.style.display = 'none'
+    console.log('top', this.clients);
 
     this.node.appendChild(this.chairsContainer)
     this.node.appendChild(this.clientContainer)
 
     for (let i = 0; i < this.chairs.length; i++) {
-      this.chairs[i].render(i)
+      this.chairs[i].render(i, this.injections['seats'])
     }
 
-    this.clients.forEach(element => {
-      console.log('this', this.node);
-        const client = new Client(element, false, this.clientContainer, this.injections, this.node)
+    console.log('before', this.clients);
+    this.injections['clients'].forEach(element => {
+        const client = new Client(element, this.clientContainer, this.injections, this)
         client.render()
     });
 
-    const price = document.createElement('p')
-    price.innerText = 'Cost : R100'
-    this.node.appendChild(price)
+    
+    if (this.injections['details']) {
+      switch (this.injections['details'][1][1]) {
+        case 'cut':
+          this.#renderPrice('100')
+          break;
+        case 'cut&dye':
+          this.#renderPrice('120')
+          break;
+        case 'cut&fibre':
+          this.#renderPrice('150')
+          break;
+        case 'cut&bleach':
+          this.#renderPrice('180')
+          break;
+        case 'chiskop':
+          this.#renderPrice('30')
+          break;
+        case 'chiskopClipper':
+          this.#renderPrice('50')
+          break;
+        case 'beard':
+          this.#renderPrice('20')
+          break;
+        case 'beardRazor':
+          this.#renderPrice('30')
+          break;
+        case 'edgeUp':
+          this.#renderPrice('20')
+          break;
+        case 'lineDesign':
+          this.#renderPrice('10+')
+          break;
+        default:
+          break;
+      }  
 
-    const button = document.createElement('button')
-    button.textContent = 'Forfit'
-    button.addEventListener('click', () => {
-       //remove client from websocket
-       Navigate.switchToHome(this)
-    })
+      const button = document.createElement('button')
+      button.textContent = 'Forfit'
+      button.addEventListener('click', () => {
+        //remove client from websocke
+        this.injections.socket.emit('remove', this.injections['user'])
+        delete this.injections.details
+        Navigate.switchToHome(this)
+      })
 
-    this.node.appendChild(button)
+      this.node.appendChild(button)
+    }
+
     this.parent.appendChild(this.node)
+    console.log('before', this.injections['clients']);
   }
 
   remove() {
@@ -61,26 +104,39 @@ class Queue {
     if (this.parent.querySelector('#queue')) { this.parent.removeChild(this.node) }
   }
 
-  updateChairs() {
-    const array = this.clients.reduce((cutting, info) => {
-      if (info.cutting == true) { cutting.push(info) }
+  updateChairs(seats) {
+    if (this.node.firstChild) {
+      Navigate.removeAllChildNodes(this.chairsContainer)
 
-      return info
-    }, [])
-    
-    for (let i = 0; i < array.length; i++) {
-      chairs[i].updateChair(array[i])
+      for (let i = 0; i < this.chairs.length; i++) {
+        this.chairs[i].render(i, seats)
+      }
+    }
+  }
+
+  updateQueue(clients) {
+    if (this.node.firstChild) {
+      Navigate.removeAllChildNodes(this.clientContainer)
+
+      clients.forEach(element => {
+        const client = new Client(element, this.clientContainer, this.injections, this)
+        client.render()
+      });
     }
   }
 
   appendClient(client) {
     if (this.node.firstChild) {
-      const node = new Client(client, false, this.clientContainer, this.injections, this.node)
+      const node = new Client(client, this.clientContainer, this.injections, this)
       node.render()
     }
   }
 
-
+  #renderPrice(cost) {
+    const price = document.createElement('p')
+    price.innerText = `Cost: R${cost}`
+    this.node.appendChild(price)
+  }
 }
 
 export default Queue

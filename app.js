@@ -16,6 +16,35 @@ const { cli } = require('webpack-dev-server');
 var conString = "postgres://vsieuphf:FzhZMmLabj9DV8EZLow8SzXorXqnsiQL@satao.db.elephantsql.com/vsieuphf" //Can be found in the Details page
 
 let queue = []
+const seats = [
+  {
+    occupied: false,
+    available: 'closed',
+    client: null,
+    barber: null,
+  }, 
+  {
+    occupied: false,
+    available: 'closed',
+    client : null,
+    barber: null
+  },
+  {
+    occupied: false,
+    available: 'closed',
+    client: null,
+    barber: null
+  }
+]
+
+const emtySeat = (index, availability, id) => {
+  seats[index] = {
+    occupied: false,
+    available: availability,
+    client: null,
+    barber: id,
+  }
+}
 
 const io = require('socket.io')(http, { cors: { origin: "*" } });
 
@@ -26,14 +55,15 @@ app.post('/register', async function(request, response) {
   const client = new pg.Client(conString);
   const data = request.body
 
-  const {username, firstname, lastname, secret, cell, email, age, sex} = data
+  let {username, firstname, lastname, secret, cell, email, age, sex} = data
 
+  username = username.toLowerCase()
   try {
     await client.connect()
 
     const query = await client.query(`
-      INSERT INTO cuttingedge (username, firstname, lastname, secret, cell, email, age, sex)
-      VALUES ('${username}', '${firstname}', '${lastname}', '${hash(`${secret}`)}', '${cell}', '${email}', '${age}', '${sex}');
+      INSERT INTO cuttingedge (username, firstname, lastname, secret, cell, email, age, sex, admin)
+      VALUES ('${username}', '${firstname}', '${lastname}', '${hash(`${secret}`)}', '${cell}', '${email}', ${age}, ${sex}, false);
     `)
 
     console.log(username, 'registered');
@@ -47,9 +77,9 @@ app.post('/register', async function(request, response) {
 app.post('/login', async (request, response) => {
   const client = new pg.Client(conString);
   const data = request.body
-  const {username, password} = data
-  console.log(data);
-  console.log(username, hash(`${password}`));
+  let {username, password} = data
+  
+  username = username.toLowerCase()
   try {
     await client.connect()
 
@@ -74,8 +104,8 @@ app.post('/login', async (request, response) => {
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  io.emit('clients', queue );
-  console.log(queue);
+  io.emit('clients', queue);
+  io.emit('seats', seats)
 
   socket.on('client', (client) => {
       queue.push(client);
@@ -100,18 +130,16 @@ io.on('connection', (socket) => {
   });
 
   socket.on('drop', (client) => {
-    const index = queue.indexOf(elment => {
-      return elment.username === client.username
+    const index = queue.findIndex(elment => {
+      return elment.id === client.id
     })
 
-    console.log('position', index);
-    if (index !== queue.length) {
+    if (index + 1 !== queue.length) {
       const dum = queue[index + 1]
       queue[index+1] = queue[index]
       queue[index] = dum
 
       console.log('swap', client.username, 'with', queue[index].username)
-      console.log('queue', queue);
 
       io.emit('clients', queue); 
     }  
@@ -130,6 +158,52 @@ io.on('connection', (socket) => {
     console.log('update', client);
 
     io.emit('clients', queue );
+  })
+
+  socket.on('start', array => {
+    const index = seats.findIndex(seat => seat.barber === null || seat.barber.id === array[0]) 
+    const client = array[1]
+
+    console.log(index);
+    seats[index] = {
+      occupied: true,
+      available: null,
+      client: array[1],
+      barber: {id: array[0]}
+    }
+    io.emit('seats', seats)
+
+    queue = queue.reduce((array, element) => {
+      if (element.username !== client.username) {
+        array.push(element)
+      }
+
+      return array;
+    }, []);
+
+    console.log(client.username, 'is now on seat')
+    io.emit('clients', queue);
+    console.log('new queue', queue);
+  })
+
+  socket.on('break', id => {
+    const index = seats.findIndex(seat => seat.barber.id === id) 
+    
+    if (index !== -1) {
+      emtySeat(index, 'on break', { 'id': id })
+      console.log(seats[index].barber, 'is on breakt')
+      io.emit('seats', seats);
+    }
+  })
+
+  socket.on('break', id => {
+    const index = seats.findIndex(seat => seat.barber.id === id) 
+    
+    if (index !== -1) {
+      emtySeat(index, 'closed', null)
+      console.log(seats[index].barber, 'is on breakt')
+      io.emit('seats', seats);
+    }
   })
 });
 

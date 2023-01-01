@@ -3,6 +3,7 @@ import Female from '../../images/female.svg'
 
 import Navigate from './Navigate'
 import Input from './Input'
+import Queue from './Queue'
 
 class Portfolio {
     constructor(injections){
@@ -12,27 +13,26 @@ class Portfolio {
         this.node.setAttribute('id', 'portfolio')
     }
 
-    render() {
+    render(client) {
         const avatar = Male //this.injections['client'].sex ? Male : Female
         
         const img = document.createElement('img')
         img.src = avatar
         this.node.appendChild(img)
 
-        const user = this.injections['user']
-        const keys = Object.keys(user)
-        const values = Object.values(user)
+        const keys = Object.keys(client)
+        const values = Object.values(client)
 
         const fullname = document.createElement('h1')
-        fullname.innerText = `${user.firstname} ${user.lastname}`
+        fullname.innerText = `${client.firstname} ${client.lastname}`
         this.node.appendChild(fullname)
        
         keys.forEach((key, i) => {
-            if (key !== 'id' && key !== 'username' 
+            if (key !== 'username' && key !== 'id'
             && key !== 'firstname' && key !== 'lastname'
             && key !== 'sex' && key !== 'email'
-            && key !== 'age') { 
-                const input = new Input([this.node, key, 'barber', 'Barber\'s name']);
+            && key !== 'age' && key !== 'admin') { 
+                const input = new Input([this.node, key, 'info', 'Barber\'s name']);
                 input.value = values[i]
 
                 switch (key) {
@@ -54,11 +54,15 @@ class Portfolio {
         });
 
         const buttons = document.createElement('div')
+        buttons.classList.add('buttons')
 
         const remove = document.createElement('button')
         remove.innerText = 'Remove'
         remove.addEventListener('click', () => {
-            this.injections.socket.emit('remove', user)
+            this.injections.socket.emit('remove', client)
+            delete this.injections.details
+            
+            Navigate.switchToHomePortfolio(this.injections)
         }) 
         buttons.appendChild(remove)
 
@@ -66,23 +70,65 @@ class Portfolio {
         finished.classList.add('finish')
         finished.innerText = 'Done'
         finished.addEventListener('click', () => {
-            this.injections.socket.emit('remove', user)
+            this.injections.socket.emit('remove', client)
+            delete this.injections.details
+
+            Navigate.switchToHomePortfolio(this.injections)
         })
         buttons.appendChild(finished)
 
         const stepdown = document.createElement('button')
         stepdown.innerText = 'Drop'
         stepdown.addEventListener('click', () => {
-            this.injections.socket.emit('drop', user)
+            this.injections.socket.emit('drop', client)
+            console.log(this.injections.details);
+            delete this.injections.details
+
+            Navigate.switchToHomePortfolio(this.injections)
         })
         buttons.appendChild(stepdown)
 
         this.node.appendChild(buttons)
 
+        const adminButtons = document.createElement('div')
+        adminButtons.classList.add('admin-buttons')
+
+        const start = document.createElement('button')
+        start.innerText = 'Cut this client'
+        start.addEventListener('click', () => {
+            this.injections['socket'].emit('start', [this.injections['user'].id, client])
+            delete this.injections.details
+
+            Navigate.switchToHomePortfolio(this.injections)
+        })
+        adminButtons.appendChild(start)
+
+        const brek = document.createElement('button')
+        brek.innerText = 'Take break'
+        brek.addEventListener('click', () => {
+            this.injections['socket'].emit('break', this.injections['user'].id)
+
+            Navigate.switchToHomePortfolio(this.injections)
+        })
+        adminButtons.appendChild(brek)
+
+        const close = document.createElement('button')
+        close.innerText = 'Clock out'
+        close.addEventListener('click', () => {
+            this.injections['socket'].emit('close', this.injections['user'].id)
+            
+            Navigate.switchToHomePortfolio(this.injections)
+        })
+        adminButtons.appendChild(close)
+
+        this.node.appendChild(adminButtons)
         this.parent.appendChild(this.node)
     }
 
     remove() {
+        this.node.querySelectorAll('.input').forEach(node => {
+            Navigate.removeAllChildNodes(node)
+        })
         Navigate.removeAllChildNodes(this.node)
         if (this.parent.querySelector('#portfolio')) { this.parent.removeChild(this.node) }
     }

@@ -31,11 +31,37 @@ class Input {
 
         if (this.field === 'request') { this.input = document.createElement('textarea') }
         
-        this.input.setAttribute('placeholder', this.placeholder)
-        this.input.setAttribute('placeholder', this.placeholder)
-        let type = this.field === 'age' ? 'number' : 'text'
-        if (this.field === 'password' || this.field == 'confirm-password') { type = 'password' }
-        this.input.setAttribute('type', type)
+        console.log(this.label);
+        if (this.field === 'style') {
+            this.input = document.createElement('select')
+            this.input.innerHTML = `
+            <option value="cut">Standard haircut</option>
+            <option value="cut&dye">Cut and dye</option>
+            <option value="cut&fibre">cut and hair fibre powder</option>
+            <option value="cut&bleach">Cut and bleach</option>
+            <option value="chiskop">Chiskop razor</option>
+            <option value="chiskopClipper">Chiskop clipper</option>
+            <option value="beard">Beard shave</option>
+            <option value="beardRazor">Beard shave razor</option>
+            <option value="edgeUp">Edge up</option>
+            <option value="lineDesign">Line design</option>`
+
+        } else if (this.field === 'barber') {
+            this.input = document.createElement('select')
+            this.input.innerHTML = `
+            <option value="any">Any of our best Barbers</option>
+            <option value="ntsako">Ntsako</option>
+            <option value="dimpho">DiMpho</option>
+            <option value="audi">Cut and bleach</option>`
+        } else {    
+            this.input.setAttribute('placeholder', this.placeholder)
+            this.input.setAttribute('placeholder', this.placeholder)
+            let type = this.field === 'age' ? 'number' : 'text'
+            if (this.field === 'password' || this.field == 'confirm-password') { type = 'password' }
+            this.input.setAttribute('type', type)
+        }
+
+        
 
         this.node.appendChild(label)
         this.node.appendChild(this.message)

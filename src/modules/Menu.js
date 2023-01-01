@@ -63,6 +63,11 @@ class Menu {
         this.node.appendChild(hr)
     }
 
+    updateGreetings() {
+        const logIn = document.querySelector('.login')
+        if (logIn) { logIn.textContent = this.injections['user'] ? `Hi ${this.injections['user'].username}` : 'login' }
+    }
+
     append() {
         this.parent.appendChild(this.node)
     }
