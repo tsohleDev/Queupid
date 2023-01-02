@@ -84,9 +84,6 @@ class LogIn{
                 return client
             }, {})
 
-
-            console.log('check', data);
-
             if (this.register) {
                 valid = password === confirm
 
@@ -97,8 +94,6 @@ class LogIn{
             if (valid) { 
                 const res = await this.#send(data) 
                
-                console.log('response', res);
-                console.log(res.status);
                 if (res.status === 200) {
                     if (!this.register) { data = await res.json()}
   
@@ -183,7 +178,6 @@ class LogIn{
             },
         })
 
-        console.log('status', response.status );
         return response
     }
 }

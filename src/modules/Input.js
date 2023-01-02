@@ -31,7 +31,6 @@ class Input {
 
         if (this.field === 'request') { this.input = document.createElement('textarea') }
         
-        console.log(this.label);
         if (this.field === 'style') {
             this.input = document.createElement('select')
             this.input.innerHTML = `

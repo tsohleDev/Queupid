@@ -60,7 +60,6 @@ class Chair {
             }   
         })
 
-        console.log(seat);
         const occupied = seat === undefined ? false : seat.occupied
 
         switch (occupied) {

@@ -5,7 +5,6 @@ import Navigate from './Navigate'
 class Client {
     constructor(clientInfo, parent, injections, grandParent){
         this.grandParent = grandParent
-        console.log('welkom', this.grandParent);
         this.injections = injections
         this.client = clientInfo
         this.admin = true// injections['user'].admin

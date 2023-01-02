@@ -81,7 +81,6 @@ class Portfolio {
         stepdown.innerText = 'Drop'
         stepdown.addEventListener('click', () => {
             this.injections.socket.emit('drop', client)
-            console.log(this.injections.details);
             delete this.injections.details
 
             Navigate.switchToHomePortfolio(this.injections)

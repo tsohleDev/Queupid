@@ -29,7 +29,6 @@ class Queue {
     this.updateChairs()
     this.node.appendChild(this.alert)
     this.alert.style.display = 'none'
-    console.log('top', this.clients);
 
     this.node.appendChild(this.chairsContainer)
     this.node.appendChild(this.clientContainer)
@@ -44,7 +43,6 @@ class Queue {
       this.chairsContainer.style.justifyContent = 'center'
     }
 
-    console.log('before', this.clients);
     this.injections['clients'].forEach(element => {
         const client = new Client(element, this.clientContainer, this.injections, this)
         client.render()
@@ -100,7 +98,6 @@ class Queue {
     }
 
     this.parent.appendChild(this.node)
-    console.log('before', this.injections['clients']);
   }
 
   remove() {
