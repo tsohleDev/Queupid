@@ -1,4 +1,4 @@
-const socket = io('ws://https://cutting-edge.onrender.com/');
+const socket = io('ws://cutting-edge.onrender.com:3000');
 
 import './index.scss'
 import Menu from './modules/Menu';
