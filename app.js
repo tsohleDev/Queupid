@@ -127,6 +127,24 @@ io.on('connection', (socket) => {
 
     console.log('remove', client.username)
     io.emit('clients', queue);   
+
+    const seat = seats.findIndex(seat => {
+      if (seat.client) {
+        return client.username === seat.client.username
+      } else { 
+        return false
+      }
+
+    })
+
+    if (seat >= 0) {
+      console.log('removing seat holder');
+      seats[seat].occupied = false
+      seats[seat].available = 'is seting up for next client'
+      seats[seat].client = null
+
+      io.emit('seats', seats)
+    } 
   });
 
   socket.on('drop', (client) => {
@@ -196,20 +214,15 @@ io.on('connection', (socket) => {
     }
   })
 
-  socket.on('break', id => {
+  socket.on('close', id => {
     const index = seats.findIndex(seat => seat.barber.id === id) 
     
     if (index !== -1) {
       emtySeat(index, 'closed', null)
-      console.log(seats[index].barber, 'is on breakt')
+      console.log(seats[index].barber, 'is closed')
       io.emit('seats', seats);
     }
   })
 });
 
 http.listen(process.env.PORT || 5000, () => console.log('listening on http://localhost:5000') );
-// const port = process.env.PORT || 5000;
-
-// app.listen(port, () => {
-//   console.log(`Server listening on port ${port}`);
-// });

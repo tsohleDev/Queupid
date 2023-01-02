@@ -48,21 +48,32 @@ injections['portfolio'] = portfolio
 const loading = new Loading(injections)
 injections['loading'] = loading
 
-console.log(user);
-if (user && !user.admin) {
+
+if (user && user.admin) {
+    menuButton.innerHTML = `<h3>${user.username}</h1>`
+    const navBar = document.querySelector('.navigation')
+    navBar.style.backgroundColor = 'transparent'
+    navBar.style.boxShadow = '0 0'
+
     toJoin.innerText = 'Manage Queue'
-} 
+    toJoin.addEventListener('click', () => { 
+        Navigate.switch(true, queue) 
+    })
 
-menuButton.addEventListener('click', () => { 
-    if (!onMenu) { Navigate.from(main, 'flex', menuNode.node, menuNode, true) }
-    else { Navigate.from(menuNode.node, 'block', main) }
-    onMenu = !onMenu
-})
+    menuButton.addEventListener('click', () => {
+        Navigate.toQueue(injections) 
+    }) 
+} else {
+    toJoin.addEventListener('click', () => { 
+        Navigate.switch(true, queueform) 
+    })
 
-
-toJoin.addEventListener('click', () => { 
-    Navigate.switch(true, queueform) 
-})
+    menuButton.addEventListener('click', () => { 
+        if (!onMenu) { Navigate.from(main, 'flex', menuNode.node, menuNode, true) }
+        else { Navigate.from(menuNode.node, 'block', main) }
+        onMenu = !onMenu
+    })
+}
 
 socket.on('client', client => {
     injections['clients'].push(client)

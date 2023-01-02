@@ -49,6 +49,40 @@ class Chair {
         this.parent.appendChild(img)
     }
 
+    renderAdmin(injections) {
+        const img = document.createElement('img')
+
+        const seat = injections['seats'].find(seat => {
+            if (seat.barber) {
+                return seat.barber.id === injections.user.id
+            } else {
+                return false
+            }   
+        })
+
+        console.log(seat);
+        const occupied = seat === undefined ? false : seat.occupied
+
+        switch (occupied) {
+            case true:
+                img.src = CenterSeated
+                break;
+    
+            default:
+                img.src = CenterChair
+                break;
+        }
+
+        img.addEventListener('click', () => {
+            if (seat !== undefined) {
+                injections['queue'].remove()
+                injections['portfolio'].render(seat.client)
+            }
+        })
+
+        this.parent.appendChild(img)
+    }
+
     remove() {
         this.parent.removeChild(this.parent.firstChild)
     }

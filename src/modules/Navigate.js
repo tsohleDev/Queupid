@@ -47,6 +47,15 @@ class Navigate{
         document.querySelector('#home').style.display = 'flex'
     }
 
+    static toQueue(injections) {
+        injections['queue'].remove()
+        injections['portfolio'].remove()
+        const home = document.querySelector('#home')
+        home.style.display = 'none'
+
+        injections['queue'].render()
+    }
+
     static fromMenu(current, next, injections) {
         current.style.display = 'none'
 

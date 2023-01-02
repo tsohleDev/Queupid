@@ -17,7 +17,8 @@ class Menu {
 
     #create() {
         const logIn = document.createElement('button')
-        logIn.textContent = this.injections['user'] ? `Hi ${this.injections['user'].username}` : 'login'
+        console.log(this.injections['user'].username);
+        logIn.textContent = this.injections['user'].username !== 'N/A' ? `Hi ${this.injections['user'].username}` : 'login'
         logIn.classList.add('login')
 
         logIn.addEventListener('click', () => {
@@ -65,7 +66,7 @@ class Menu {
 
     updateGreetings() {
         const logIn = document.querySelector('.login')
-        if (logIn) { logIn.textContent = this.injections['user'] ? `Hi ${this.injections['user'].username}` : 'login' }
+        if (logIn) { logIn.textContent = this.injections['user'].username !== 'N/A' ? `Hi ${this.injections['user'].username}` : 'login' }
     }
 
     append() {

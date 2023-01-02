@@ -26,7 +26,7 @@ class Client {
         name.innerHTML = this.client.username
         this.node.appendChild(name)
 
-        if (this.admin) {
+        if (this.injections['user'].admin) {
             const button = document.createElement('button')
             button.innerHTML = '<i class="fa-solid black fa-ellipsis-vertical"></i>'
             if (Navigate.isUser(this.injections['user'], this.client)) {
@@ -36,7 +36,6 @@ class Client {
 
             button.addEventListener('click', () => {
                 this.grandParent.remove()
-                console.log('granparent', this.grandParent);
                 this.injections['portfolio'].render(this.client)
             })
 

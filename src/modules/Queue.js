@@ -34,8 +34,14 @@ class Queue {
     this.node.appendChild(this.chairsContainer)
     this.node.appendChild(this.clientContainer)
 
-    for (let i = 0; i < this.chairs.length; i++) {
-      this.chairs[i].render(i, this.injections['seats'])
+    if (this.injections.user && !this.injections.user.admin) {
+      for (let i = 0; i < this.chairs.length; i++) {
+        this.chairs[i].render(i, this.injections['seats'])
+      }
+    } else if (this.injections.user.admin) {
+      this.chairs[1].renderAdmin(this.injections)
+
+      this.chairsContainer.style.justifyContent = 'center'
     }
 
     console.log('before', this.clients);
@@ -105,12 +111,16 @@ class Queue {
   }
 
   updateChairs(seats) {
-    if (this.node.firstChild) {
+    if (this.injections.user && !this.injections.user.admin && this.node.firstChild) {
       Navigate.removeAllChildNodes(this.chairsContainer)
 
       for (let i = 0; i < this.chairs.length; i++) {
         this.chairs[i].render(i, seats)
       }
+    } else if (this.injections.user.admin && this.node.firstChild) {
+      Navigate.removeAllChildNodes(this.chairsContainer)
+
+      this.chairs[1].renderAdmin(this.injections)
     }
   }
 
