@@ -1,4 +1,4 @@
-const socket = io('ws://localhost:5000');
+const socket = io('ws://https://cutting-edge.onrender.com/');
 
 import './index.scss'
 import Menu from './modules/Menu';
@@ -30,8 +30,6 @@ const errorcodes = {
 
 let user = {username: 'N/A'}
 if (localStorage.getItem('CE-user')) {user = JSON.parse(localStorage.getItem('CE-user'))}
-console.log(user);
-
 
 const injections = { 'socket': socket, 'clients': clients, 'user':  user, 'errors': errorcodes}
 
