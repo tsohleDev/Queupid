@@ -12,8 +12,7 @@ const path = require('path')
 
 var pg = require('pg');
 const { connect } = require('http2');
-const { cli } = require('webpack-dev-server');
-var conString = "postgres://clients_user:PDEYxoHr8eQiipm7b8lgI9LrqkJZPZwP@dpg-cehoqlpgp3jvlf06e91g-a/clients" //Can be found in the Details page
+var conString = "postgres://clients_user:PDEYxoHr8eQiipm7b8lgI9LrqkJZPZwP@dpg-cehoqlpgp3jvlf06e91g-a.singapore-postgres.render.com/clients" //Can be found in the Details page
  
 const connectToDatabase = async () => {
   try {
