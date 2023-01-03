@@ -14,13 +14,16 @@ var pg = require('pg');
 const { connect } = require('http2');
 const { cli } = require('webpack-dev-server');
 var conString = "postgres://clients_user:PDEYxoHr8eQiipm7b8lgI9LrqkJZPZwP@dpg-cehoqlpgp3jvlf06e91g-a/clients" //Can be found in the Details page
-
-
-try {
-  await client.connect()
-} catch (error) {
-  console.log('couldnt connect to database', error.message);
+ 
+connect = async () => {
+  try {
+    await client.connect()
+  } catch (error) {
+    console.log('couldnt connect to database', error.message);
+  }
 }
+
+connect()
 
 let queue = []
 const seats = [
