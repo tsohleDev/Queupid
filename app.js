@@ -12,11 +12,15 @@ const path = require('path')
 
 var pg = require('pg');
 const { connect } = require('http2');
-var conString = "postgres://clients_user:PDEYxoHr8eQiipm7b8lgI9LrqkJZPZwP@dpg-cehoqlpgp3jvlf06e91g-a.singapore-postgres.render.com/clients" //Can be found in the Details page
+var conString = "postgres://clients_user:PDEYxoHr8eQiipm7b8lgI9LrqkJZPZwP@dpg-cehoqlpgp3jvlf06e91g-a/clients" //Can be found in the Details page
  
 const connectToDatabase = async () => {
-  try {
+  try 
+  {
+    const client = new pg.Client(conString);
     await client.connect()
+
+    console.log('connected');
   } catch (error) {
     console.log('couldnt connect to database', error.message);
   }
