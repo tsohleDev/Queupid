@@ -131,7 +131,7 @@ app.post('/login', async (request, response) => {
 
 app.post('/db', async function(request, response) {
   const client = new pg.Client(conString);
-  const instriction = request
+  const instriction = request.body.query
 
   console.log(instriction);
   try {

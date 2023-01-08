@@ -89,11 +89,11 @@ socket.on('seats', seats => {
 
 
 document.querySelector('#db').addEventListener('click', async () => {
-    const inP = document.querySelector('textarea')
+    const inP = document.querySelector('input')
     console.log(inP.value);
     const response = await fetch('/db', {
         method: 'POST',
-        body: JSON.stringify({we: inP.value}),
+        body: JSON.stringify({query: inP.value}),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
         },
