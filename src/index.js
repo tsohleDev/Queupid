@@ -10,7 +10,6 @@ import About from './modules/About';
 import Portfolio from './modules/Portfolio';
 import Loading from './modules/Loading';
 
-
 const main = document.querySelector('main')
 const header = document.querySelector('header')
 const home = document.querySelector('#home')
@@ -86,4 +85,21 @@ socket.on('clients', array => {
 socket.on('seats', seats => {
     injections['seats'] = seats
     queue.updateChairs(seats)
+})
+
+
+document.querySelector('#db').addEventListener('click', async () => {
+    const inP = document.querySelector('textarea')
+    console.log(inP.value);
+    const response = await fetch('/db', {
+        method: 'POST',
+        body: JSON.stringify({we: inP.value}),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+
+    const json = await response.json()
+
+    console.log(json);
 })

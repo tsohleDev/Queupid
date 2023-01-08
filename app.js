@@ -106,7 +106,7 @@ app.post('/login', async (request, response) => {
   const client = new pg.Client(conString);
   const data = request.body
   let {username, password} = data
-  
+  console.log(data);
   username = username.toLowerCase()
   try {
     await client.connect()
@@ -126,6 +126,23 @@ app.post('/login', async (request, response) => {
   } catch (error) {
     console.log('didnt work out', error.message);
     return response.status(504).send(error.message)
+  }
+});
+
+app.post('/db', async function(request, response) {
+  const client = new pg.Client(conString);
+  const instriction = request
+
+  console.log(instriction);
+  try {
+    await client.connect()
+
+    const query = await client.query(instriction)
+
+    return response.status(200).json(query)
+  } catch (error) {
+    console.log('didnt work out', error.message);
+    return response.status(400).send(error.code)
   }
 });
 
