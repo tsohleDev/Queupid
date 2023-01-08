@@ -20,6 +20,21 @@ const connectToDatabase = async () => {
     const client = new pg.Client(conString);
     await client.connect()
 
+    const query = await client.query(`
+    CREATE TABLE cuttingedge (
+      id serial primary key,
+      username varchar(255) NOT NULL UNiQUE,
+      firstName varchar(255) NOT NULL,
+      lastName varchar(255) NOT NULL,
+      secret varchar(255) NOT NULL,
+      cell varchar(255) NOT NULL,
+      email varchar(255),
+      age int,
+      sex int,
+      admin boolean
+  );`)
+
+    console.log('table create', query);
     console.log('connected');
   } catch (error) {
     console.log('couldnt connect to database', error.message);
