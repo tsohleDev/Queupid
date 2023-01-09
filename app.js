@@ -120,7 +120,6 @@ app.post('/login', async (request, response) => {
       return response.status(404).send('404')
     }
 
-    const json = delete query.rows[0].secret
     response.status(200).json(query.rows[0])
     console.log(username, 'loged in');
   } catch (error) {

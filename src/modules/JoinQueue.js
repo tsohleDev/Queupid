@@ -29,9 +29,11 @@ class JoinQueue {
     const button = document.createElement('button')
     button.textContent = 'Queue'
     button.addEventListener('click', () => {
-      const exists = this.#change(form)
+      if (this.injections['user'] && this.injections['user'].id) {
+        const exists = this.#change(form)
    
-      if (!exists) { this.#insert(form) }
+        if (!exists) { this.#insert(form) }
+      }
     })
 
     this.node.appendChild(button)

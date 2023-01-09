@@ -125,13 +125,16 @@ class Queue {
   updateQueue(clients) {
     if (this.node.firstChild) {
       Navigate.removeAllChildNodes(this.clientContainer)
-      this.node.removeChild(document.querySelector('.price'))
-      this.node.removeChild(document.querySelector('.forfit'))
 
       clients.forEach(element => {
         const client = new Client(element, this.clientContainer, this.injections, this)
         client.render()
       });
+
+      if (!clients.find(client => client.id === this.injections['user'].id)) {
+        this.node.removeChild(this.node.querySelector('.price'))
+        this.node.removeChild(this.node.querySelector('.forfit'))
+      }
     }
   }
 
