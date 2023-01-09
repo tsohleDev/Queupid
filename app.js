@@ -129,23 +129,6 @@ app.post('/login', async (request, response) => {
   }
 });
 
-app.post('/db', async function(request, response) {
-  const client = new pg.Client(conString);
-  const instriction = request.body.query
-
-  console.log(instriction);
-  try {
-    await client.connect()
-
-    const query = await client.query(instriction)
-
-    return response.status(200).json(query)
-  } catch (error) {
-    console.log('didnt work out', error.message);
-    return response.status(400).send(error.code)
-  }
-});
-
 io.on('connection', (socket) => {
   console.log('a user connected');
 

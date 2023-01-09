@@ -19,6 +19,7 @@ const menuButton = document.querySelector('#menu')
 const toJoin = document.querySelector('#join')
 let onMenu = false
 
+localStorage.setItem('CE-user', JSON.stringify({admin: false, age: 23, cell: "+275560512", email: "mokhemisitsohle@gmail.com", firstname: "Tsohle", id: 1, lastname: "mokhemisi", sex: 1, username: "tsohleadmin"}))
 
 let clients = []
 
@@ -85,21 +86,4 @@ socket.on('clients', array => {
 socket.on('seats', seats => {
     injections['seats'] = seats
     queue.updateChairs(seats)
-})
-
-
-document.querySelector('#db').addEventListener('click', async () => {
-    const inP = document.querySelector('input')
-    console.log(inP.value);
-    const response = await fetch('/db', {
-        method: 'POST',
-        body: JSON.stringify({query: inP.value}),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        },
-    })
-
-    const json = await response.json()
-
-    console.log(json);
 })
