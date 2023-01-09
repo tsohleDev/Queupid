@@ -19,8 +19,6 @@ const menuButton = document.querySelector('#menu')
 const toJoin = document.querySelector('#join')
 let onMenu = false
 
-localStorage.setItem('CE-user', JSON.stringify({admin: false, age: 23, cell: "+275560512", email: "mokhemisitsohle@gmail.com", firstname: "Tsohle", id: 1, lastname: "mokhemisi", sex: 1, username: "tsohleadmin"}))
-
 let clients = []
 
 const errorcodes = {
