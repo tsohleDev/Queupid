@@ -86,6 +86,7 @@ class Queue {
       }  
 
       const button = document.createElement('button')
+      button.classList.add('forfit')
       button.textContent = 'Forfit'
       button.addEventListener('click', () => {
         //remove client from websocke
@@ -124,6 +125,8 @@ class Queue {
   updateQueue(clients) {
     if (this.node.firstChild) {
       Navigate.removeAllChildNodes(this.clientContainer)
+      this.node.removeChild(document.querySelector('.price'))
+      this.node.removeChild(document.querySelector('.forfit'))
 
       clients.forEach(element => {
         const client = new Client(element, this.clientContainer, this.injections, this)
@@ -141,6 +144,7 @@ class Queue {
 
   #renderPrice(cost) {
     const price = document.createElement('p')
+    price.classList.add('price')
     price.innerText = `Cost: R${cost}`
     this.node.appendChild(price)
   }
