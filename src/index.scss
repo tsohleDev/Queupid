@@ -203,6 +203,16 @@ main  {
     #queue-form {
         @include column-center();
 
+        p{
+            background-color: red;
+            font-size: large;
+            text-align: center;
+            color: #F8F7F7;
+            width: 100%;
+
+            padding: 1vh 0;
+        }
+
         .input {
             @include column-center();
             width: 95%;
@@ -307,12 +317,19 @@ main  {
             margin: 3vh 0 0 0;
             font-size: 8vw;
         }
+        
         button {
             @include button();
 
             align-self: center;
             padding: 1vh 5vw;
             margin: 3vh 0;
+        }
+
+        .admin_buttons {
+            position: absolute;
+            bottom: 0;
+            left: 3vw;
         }
     }
 

@@ -89,13 +89,38 @@ class Queue {
       button.classList.add('forfit')
       button.textContent = 'Forfit'
       button.addEventListener('click', () => {
-        //remove client from websocke
+        //remove client from websocket
         this.injections.socket.emit('remove', this.injections['user'])
         delete this.injections.details
         Navigate.switchToHome(this)
       })
 
       this.node.appendChild(button)
+    }
+
+    if (this.injections['user'] && this.injections['user'].admin) {
+      const handleButtons = document.createElement('div')
+      handleButtons.classList.add('admin_buttons')
+
+      const brek = document.createElement('button')
+      brek.innerText = 'Take break'
+      brek.addEventListener('click', () => {
+          this.injections['socket'].emit('break', this.injections['user'].id)
+
+          Navigate.switchToHome(this)
+      })
+      handleButtons.appendChild(brek)
+
+      const close = document.createElement('button')
+      close.innerText = 'Clock out'
+      close.addEventListener('click', () => {
+          this.injections['socket'].emit('close', this.injections['user'].id)
+          
+          Navigate.switchToHome(this)
+      })
+
+      handleButtons.appendChild(close)
+      this.node.appendChild(handleButtons)
     }
 
     this.parent.appendChild(this.node)
@@ -134,6 +159,7 @@ class Queue {
       if (!clients.find(client => client.id === this.injections['user'].id)) {
         this.node.removeChild(this.node.querySelector('.price'))
         this.node.removeChild(this.node.querySelector('.forfit'))
+        delete this.injections['details']
       }
     }
   }

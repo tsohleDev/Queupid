@@ -27,6 +27,17 @@ const errorcodes = {
 }
 
 let user = {username: 'N/A'}
+user = {
+    "id": 1,
+    "username": "tsohleadmin",
+    "firstname": "Tsohle",
+    "lastname": "mokhemisi",
+    "cell": "+275560512",
+    "email": "mokhemisitsohle@gmail.com",
+    "age": 23,
+    "sex": 1,
+    "admin": false
+}
 if (localStorage.getItem('CE-user')) {user = JSON.parse(localStorage.getItem('CE-user'))}
 
 const injections = { 'socket': socket, 'clients': clients, 'user':  user, 'errors': errorcodes}
@@ -48,7 +59,7 @@ injections['loading'] = loading
 if (user && user.admin) {
     menuButton.innerHTML = `<h3>${user.username}</h1>`
     const navBar = document.querySelector('.navigation')
-    navBar.style.backgroundColor = 'transparent'
+    navBar.style.backgroundColor = '#fff'
     navBar.style.boxShadow = '0 0'
 
     toJoin.innerText = 'Manage Queue'

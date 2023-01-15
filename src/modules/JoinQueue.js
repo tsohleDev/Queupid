@@ -12,6 +12,11 @@ class JoinQueue {
   list = []
 
   render() {
+    const alertToLogIn = document.createElement('p')
+    alertToLogIn.textContent = 'Please log in to join the queue'
+    alertToLogIn.style.display = 'none'
+    this.node.appendChild(alertToLogIn)
+
     const inputs = [
         [this.node, 'Barber', 'barber', 'Barber\'s name'],
         [this.node, 'Style', 'style', 'Hair Style'],
@@ -29,10 +34,14 @@ class JoinQueue {
     const button = document.createElement('button')
     button.textContent = 'Queue'
     button.addEventListener('click', () => {
+      console.log(this.injections['user']);
       if (this.injections['user'] && this.injections['user'].id) {
         const exists = this.#change(form)
    
         if (!exists) { this.#insert(form) }
+      } else {
+        alertToLogIn.style.display = 'block'
+        setTimeout(() => alertToLogIn.style.display = 'none', 3000)
       }
     })
 

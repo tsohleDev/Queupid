@@ -102,24 +102,6 @@ class Portfolio {
         })
         adminButtons.appendChild(start)
 
-        const brek = document.createElement('button')
-        brek.innerText = 'Take break'
-        brek.addEventListener('click', () => {
-            this.injections['socket'].emit('break', this.injections['user'].id)
-
-            Navigate.switchToHomePortfolio(this.injections)
-        })
-        adminButtons.appendChild(brek)
-
-        const close = document.createElement('button')
-        close.innerText = 'Clock out'
-        close.addEventListener('click', () => {
-            this.injections['socket'].emit('close', this.injections['user'].id)
-            
-            Navigate.switchToHomePortfolio(this.injections)
-        })
-        adminButtons.appendChild(close)
-
         this.node.appendChild(adminButtons)
         this.parent.appendChild(this.node)
     }
