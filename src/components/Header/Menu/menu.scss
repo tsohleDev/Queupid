@@ -1,0 +1,60 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  .login {
+    background-color: black;
+    color: #fff;
+    margin: 3vh auto 0;
+    padding: 5px 20px;
+
+    a {
+      color: inherit;
+      font-size: xx-large;
+      text-decoration: none;
+    }
+
+    @media screen and (min-height: 700px) {
+      a {
+        font-size: 11vw;
+      }
+    }
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2.5vh 0;
+
+      a {
+        font-size: 19vw;
+        color: #b48100;
+      }
+
+      img {
+        width: 25vw;
+      }
+
+      @media screen and (min-height: 700px) {
+        margin: 3.5vh 0;
+
+        a {
+            font-size: 20vw;
+        }
+      }
+    }
+  }
+}

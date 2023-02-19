@@ -1,0 +1,29 @@
+.client {
+    display: flex;
+    justify-content: space-around;
+    margin: 2vh 4vw 0;
+    background-color: #D9D9D9;
+    box-shadow: #e9c636 1px 1px;
+
+    img {
+        height: 11vh;
+        align-self: center;
+    }
+
+    h3 {
+        align-self: center;
+        font-size: xx-large;
+        padding: 0;
+    }
+
+    button {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+
+        span {
+            font-size: 9vh;
+        }
+    }
+}

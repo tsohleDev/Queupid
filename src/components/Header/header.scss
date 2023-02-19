@@ -1,0 +1,51 @@
+header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 96%;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    height: 8%;
+    background-color: #e7e7e7;
+    box-shadow: #f9b339 1px 2px;
+
+    button {
+      padding: 0;
+    }
+
+    a {
+      background-color: transparent;
+      text-decoration: none;
+      box-shadow: 0 0;
+      padding: 0;
+      border: 0;
+      font-size: 2.5vh;
+      font-weight: bold;
+      color: #f9b339;
+      cursor: pointer;
+    }
+    
+    img {
+        width: 15vw;
+    }
+
+    .material-symbols-outlined {
+      width: auto;
+      height: auto;
+      font-size: 9vh;
+      align-self: center;
+    }
+}
+
+.header-admin {
+  background-color: transparent;
+  box-shadow: 0 0;
+
+  a {
+    color: #f9b339;
+    font-size: 5vh;
+    align-self: center;
+    padding: 0 20px;
+  }
+}

@@ -1,0 +1,59 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  img {
+    width: 60%;
+  }
+
+  pre {
+    font-size: xxx-large;
+    margin: 0 0 3vh;
+    color: #c5c51d;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3vh 0;
+    width: 100%;
+
+    label {
+      font-size: 6vh;
+      font-weight: 300;
+    }
+
+    input {
+      width: 90%;
+      height: 7vh;
+      font-size: x-large;
+      background-color: #d9d9d9;
+      box-shadow: #e9c636 1px 1px;
+      border: 0;
+    }
+  }
+
+  .admin-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+
+    .done {
+      font-size: smaller;
+      background-color: cadetblue;
+    }
+
+    .cut {
+      font-size: smaller;
+      margin: 16vh 0 0;
+      background-color: #9dfadb;
+    }
+
+    .drop {
+      font-size: smaller;
+      background-color: #ffc4c4;
+    }
+  }
+}

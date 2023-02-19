@@ -1,0 +1,47 @@
+#queue {
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+
+  .alert {
+    display: flex;
+    justify-content: center;
+    background-color: red;
+    color: #fff;
+    padding: 10px;
+    margin: 2vh auto 0;
+    font-size: x-large;
+  }
+
+  .chairs {
+    display: flex;
+    justify-content: space-between;
+    margin: 3vh 0 0;
+
+    .middle {
+      margin: 0 0 10vh;
+    }
+  }
+
+  .chairs-admin {
+    display: flex;
+    justify-content: center;
+  }
+    
+  .button-forfit {
+    align-self: center;
+    margin: 3vh;
+  }
+
+  .admin-buttons {
+    display: flex;
+    height: -webkit-fill-available;
+    align-items: end;
+    justify-content: space-evenly;
+    margin: 2vh 0;
+
+    button {
+      font-size: large;
+    }
+  }
+}
