@@ -12,6 +12,10 @@ main {
   top: 10%;
 }
 
+.no-header {
+  top: 0;
+}
+
 button {
   background-color: #f9b339bf;
   padding: 2vh 10vw;
