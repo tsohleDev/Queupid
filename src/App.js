@@ -47,7 +47,7 @@ function App() {
             <Route path="/join-queue" element={ <JoinQueue /> } />
             <Route path="/queue" element={ <Queue /> } />
             <Route path="/about" element={ <About /> } />
-            <Route path="/*" element={<h1>Not Found</h1>} />
+            <Route path="/*" element={ <Home /> } />
           </Routes>
       </main>
     </>
