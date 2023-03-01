@@ -58,14 +58,6 @@ function Signup() {
                 }
             }
         }
-
-        if (!alert) {
-            console.log('dispatch', alert);
-            //dispatch(authenticate(form));
-            //setSubmited(true);
-        }
-        
-        console.log('alert is', alert);
     }
 
     useEffect(() => {

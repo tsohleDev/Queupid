@@ -15,6 +15,7 @@ export const register = (form) => ({ type: SIGN_UP, form });
 export const authenticate = createAsyncThunk(
   AUTH,
   async (args, thunkAPI) => {
+    console.log('args', args);
     try {
       const url = args.method === 'login' ? 'https://cutting-edge.onrender.com/login' : 'https://cutting-edge.onrender.com/register';
 
