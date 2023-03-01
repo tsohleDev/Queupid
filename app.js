@@ -62,6 +62,12 @@ const seats = [
     available: 'closed',
     client: null,
     barber: null
+  },
+  {
+    occupied: false,
+    available: 'closed',
+    client: null,
+    barber: null
   }
 ]
 
@@ -105,14 +111,14 @@ app.post('/register', async function(request, response) {
 app.post('/login', async (request, response) => {
   const client = new pg.Client(conString);
   const data = request.body
-  let {username, password} = data
+  let {username, secret} = data
   console.log(data);
   username = username.toLowerCase()
   try {
     await client.connect()
 
     const query = await client.query(`SELECT * FROM "public"."cuttingedge"
-      WHERE username = '${username}' AND secret = '${hash(`${password}`)}'
+      WHERE username = '${username}' AND secret = '${hash(`${secret}`)}'
     `)
 
     if (query.rowCount !== 1) {
@@ -141,6 +147,11 @@ io.on('connection', (socket) => {
       console.log('queue', queue);
 
       io.emit('client', client);   
+  });
+
+  socket.on('profile', (id) => {
+    const profile = queue.find(client => id === client.id) || null
+    io.emit('profile', profile);
   });
 
   socket.on('remove', (client) => {
