@@ -20,6 +20,7 @@ export const authenticate = createAsyncThunk(
       const url = args.method === 'login' ? 'https://cutting-edge.onrender.com/login' : 'https://cutting-edge.onrender.com/register';
 
       const data = await fetch(url, {
+        mode: 'no-cors',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
