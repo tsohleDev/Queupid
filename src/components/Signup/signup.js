@@ -64,7 +64,7 @@ function Signup() {
         const values = Object.values(form);
         if (!alert && values.every(Boolean)) {
             dispatch(authenticate(form));
-            setSubmited(true);
+            //setSubmited(true);
         }
     }, [alert]);
 
