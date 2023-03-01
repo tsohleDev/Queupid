@@ -1,20 +1,17 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { toogle, writeHomeRoute } from '../../redux/menutoogle/menutoogle';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Links from './Links/links';
 import logo from '../Assets/Images/logo.svg';
-import { getUser } from '../../redux/user/user';
+import { getUser } from '../../redux/authenticate/authenticate';
 import './header.scss';
 import { useEffect, useState } from 'react';
 
 function Header(props) {
     const location = useLocation();
-    const {path, openMenu} = useSelector(state => state.menuToogle);
     const [admin, setAdmin] = useState(false);
     const user = useSelector(state => state.user)
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getUser());
@@ -24,15 +21,11 @@ function Header(props) {
         setAdmin(user && user.admin);
     }, [user])
 
-    const { name, links } = props;
+    const { name, links, handleClick: menuClick, menu } = props;
     const mobile = true;
 
     const handleClick = () => {
-        dispatch(toogle(!openMenu));
-
-        if (openMenu && location.pathname !== '/menu') dispatch(writeHomeRoute(location.pathname));
-        if (!openMenu) {console.log(path, 'yu');}
-        //navigate.replace(path, { state: { from: 'previousPage' } });
+        menuClick(!menu)
     }
     
     if (location.pathname === '/login' || location.pathname === '/signup') return null;
@@ -43,9 +36,9 @@ function Header(props) {
                 <img src={logo} alt='Cutting Edge Logo' />
             </Link>
 
-            {mobile && !admin && <Link to={openMenu ? path : '/menu'} onClick={handleClick} className="material-symbols-outlined">
+            {mobile && !admin && <button onClick={handleClick} className="material-symbols-outlined">
                         menu
-                    </Link>
+                    </button>
             }
 
             {admin && <Link to='/queue' className='admin-link'>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { getUser } from '../../redux/user/user';
+import { getUser } from '../../redux/authenticate/authenticate';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 
@@ -17,10 +17,7 @@ function Home() {
     }, [dispatch])
 
     useEffect(() => {
-        setAdmin(user && user.admin)
-
-        console.log('menus',menuToogle);
-
+        setAdmin(user && user.admin);
     }, [user])
 
     return (
@@ -29,7 +26,7 @@ function Home() {
 
             <button>
                 {!admin && 
-                  <Link to='/join-queue'>
+                  <Link to='/options'>
                     Join Queue
                   </Link>
                 }

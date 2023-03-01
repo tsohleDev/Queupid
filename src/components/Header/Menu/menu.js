@@ -14,6 +14,7 @@ function Menu(props) {
     return (
         <div className="menu">
             <nav className="login">
+                {/* get user to say Hi to */}
                 <Links isactive={false} path="/login" name={`Hi user`}/>
             </nav>
 

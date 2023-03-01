@@ -10,8 +10,9 @@ const socket = io('https://cutting-edge.onrender.com/');
 function JoinQueue() {
 
     const user = useSelector(state => state.user)
+    const service = useSelector(state => state.options)
     const dispatch = useDispatch()
-
+    
     const [form, setForm] = useState({});
     const [navigate, setNavigate] = useState(false);
 
@@ -32,7 +33,7 @@ function JoinQueue() {
 
     return (
         <section className='join-queue'>
-            {user &&
+            {user && service &&
               <form id="queue-form">
                 <div className="form-group">
                     <label htmlFor="barber">Barber</label>
@@ -73,12 +74,53 @@ function JoinQueue() {
                       onChange={e => {setForm({...form, request:e.target.value})}}></textarea>
                 </div>
 
-                <button onClick={() => {handleClick()}} className='button-signup' type="button">
+                <button onClick={handleClick} className='button-signup' type="button">
                     Join Queue
                 </button>
 
                 {navigate && <Navigate to='/queue' />}
               </form>
+            }
+
+            {user && !service &&
+                <form id="queue-form">
+                    <div className="form-group">
+                        <label htmlFor="Beautician">Beautician</label>
+                        <input
+                            id="Beautician"
+                            name="Beautician"
+                            type="text"
+                            value={form.beautician}
+                            onChange={(e) => { setForm({ ...form, beautician: e.target.value }) }} />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="Nail">Nail</label>
+                        <select
+                            id="Nail"
+                            name="Nail"
+                            onChange={e => { setForm({ ...form, nail: e.target.value }) }}>
+                            <option value="fade">Fade</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="request">Special Request</label>
+                        <textarea
+                            id="request"
+                            name="request"
+                            rows="4"
+                            cols="50"
+                            placeholder="Enter any special requests here..."
+                            onChange={e => { setForm({ ...form, request: e.target.value }) }}></textarea>
+                    </div>
+
+                    <button onClick={handleClick} className='button-signup' type="button">
+                        Join Queue
+                    </button>
+
+                    {navigate && <Navigate to='/queue' />}
+                </form>
             }
 
             {!user && <h1>{'please login/register before you queue up'}</h1>}

@@ -1,8 +1,8 @@
 import logo from '../Assets/Images/logo.svg';
 import FormGroup from '../Login/FormGroup/formGroup';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
-import {authenticate} from '../../redux/signIn/signIn';
+import {authenticate} from '../../redux/authenticate/authenticate';
 import { Navigate } from "react-router-dom";
 import '../Login/login.scss';
 
@@ -41,7 +41,7 @@ function Signup() {
                 const passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/
 
                 if (!value.match(passw)) { 
-                    setAlert({type:'password', message:'Your password should be between 8 to 15 characters with at least one lowercase letter, one uppercase letter, one numeric digit, and one special character'});
+                    setAlert({type:'secret', message:'Your password should be between 8 to 15 characters with at least one lowercase letter, one uppercase letter, one numeric digit, and one special character'});
                     break;
                 }
             } else if (keys[i] === 'confirmPassword') {
@@ -60,14 +60,23 @@ function Signup() {
         }
 
         if (!alert) {
-            dispatch(authenticate(form));
-            setSubmited(true)
+            console.log('dispatch', alert);
+            //dispatch(authenticate(form));
+            //setSubmited(true);
         }
         
-        console.log(alert);
+        console.log('alert is', alert);
     }
 
-    if (submited) return <Navigate to="/home" replace/>;
+    useEffect(() => {
+        const values = Object.values(form);
+        if (!alert && values.every(Boolean)) {
+            dispatch(authenticate(form));
+            setSubmited(true);
+        }
+    }, [alert]);
+
+    if (submited) return <Navigate to="/" replace/>;
 
     return (
         <section id='register-page'>
