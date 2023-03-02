@@ -97,15 +97,14 @@ app.post('/register', async function(request, response) {
   username = username.toLowerCase()
   try {
     await client.connect()
-    console.log(username, firstname, lastname, secret, cell, email, age, sex);
-
+    
     const query = await client.query(`
       INSERT INTO cuttingedge (username, firstname, lastname, secret, cell, email, age, sex, admin)
       VALUES ('${username}', '${firstname}', '${lastname}', '${hash(`${secret}`)}', '${cell}', '${email}', ${age}, ${sex}, false);
     `)
 
     console.log(username, 'registered');
-    return response.status(200).send('registered')
+    return response.status(200).send(data)
   } catch (error) {
     console.log('didnt work out', error.message);
     return response.status(400).send(error.code)
