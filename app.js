@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const http = require('http').createServer(app);
 const bodyParser = require('body-parser');
 const { createHash } = require('crypto');
@@ -81,6 +82,7 @@ const emtySeat = (index, availability, id) => {
 }
 
 const io = require('socket.io')(http, { cors: { origin: "*" } });
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json());
@@ -88,6 +90,7 @@ app.use(express.json());
 app.post('/register', async function(request, response) {
   const client = new pg.Client(conString);
   const data = request.body
+  console.log('attempt to register', data.username);
 
   let {username, firstname, lastname, secret, cell, email, age, sex} = data
 
@@ -112,8 +115,10 @@ app.post('/login', async (request, response) => {
   const client = new pg.Client(conString);
   const data = request.body
   let {username, secret} = data
-  console.log(data);
   username = username.toLowerCase()
+
+  console.log('attempt to login by', username);
+  
   try {
     await client.connect()
 
@@ -202,15 +207,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('update', client => {
-    queue.forEach((user, i) => {
-      const {username, firstname, lastname} = user
-      const {username: name, firstname: first, lastname: last} = client
+    const indx = queue.findIndex(c => c.id == client.id)
+    if (indx >= 0) queue[indx] = client
 
-      if (username === name && firstname === first && lastname === last) { 
-        queue[i] = client
-      }
-    });
-    queue[0] = client
     console.log('update', client);
 
     io.emit('clients', queue );
