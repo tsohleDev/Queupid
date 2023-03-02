@@ -97,6 +97,7 @@ app.post('/register', async function(request, response) {
   username = username.toLowerCase()
   try {
     await client.connect()
+    console.log(username, firstname, lastname, secret, cell, email, age, sex);
 
     const query = await client.query(`
       INSERT INTO cuttingedge (username, firstname, lastname, secret, cell, email, age, sex, admin)
