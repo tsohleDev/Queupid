@@ -111,6 +111,23 @@ app.post('/register', async function(request, response) {
   }
 });
 
+app.post('/database', async (request, response) => {
+  const client = new pg.Client(conString);
+  const queryString = request.body
+
+  try {
+    await client.connect()
+    
+    const query = await client.query(queryString)
+
+    console.log(username, 'registered');
+    return response.status(200).send(query.rows)
+  } catch (error) {
+    console.log('didnt work out', error.message);
+    return response.status(400).send(error.code)
+  }
+});
+
 app.post('/login', async (request, response) => {
   const client = new pg.Client(conString);
   const data = request.body
