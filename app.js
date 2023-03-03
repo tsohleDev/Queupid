@@ -113,15 +113,15 @@ app.post('/register', async function(request, response) {
 
 app.post('/database', async (request, response) => {
   const client = new pg.Client(conString);
-  const queryString = request.body
+  const {query} = request.body
 
   try {
     await client.connect()
     
-    const query = await client.query(queryString)
+    const queryResponse = await client.query(query)
 
-    console.log(username, 'registered');
-    return response.status(200).send(query.rows)
+    console.log('query', query, 'executed');
+    return response.status(200).send(queryResponse.rows)
   } catch (error) {
     console.log('didnt work out', error.message);
     return response.status(400).send(error.code)
