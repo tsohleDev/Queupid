@@ -5,9 +5,11 @@ import hairwash from "../../Assets/Images/hairwash.svg";
 import razor from "../../Assets/Images/razor.svg";
 
 import "./menu.scss";
+import { useSelector } from "react-redux";
 
 //mobile menu
 function Menu(props) {
+    const {user} = useSelector(state => state.auth0)
     const { links } = props;
     const icons = [comb, clipper, razor, hairwash];
 
@@ -15,7 +17,7 @@ function Menu(props) {
         <div className="menu">
             <nav className="login">
                 {/* get user to say Hi to */}
-                <Links isactive={false} path="/login" name={`Hi user`}/>
+                <Links isactive={false} path="/login" name={user ? `Hi ${user.username}` : 'Hi User'}/>
             </nav>
 
             <nav>

@@ -3,6 +3,12 @@
   flex-direction: column;
   height: inherit;
 
+  .main {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+  }
+
   .alert {
     display: flex;
     justify-content: center;
@@ -17,6 +23,10 @@
     display: flex;
     justify-content: space-between;
     margin: 3vh 0 0;
+
+    .one-chair {
+      margin: 0 auto;
+    }
 
     .middle {
       margin: 0 0 10vh;
@@ -43,5 +53,15 @@
     button {
       font-size: large;
     }
+  }
+
+  .button-nav {
+    align-self: self-start;
+    height: auto;
+    box-shadow: 0 0;
+    margin: 0 auto;
+    color: #634f2bbf;
+    background-color: transparent;
+    font-weight: bold;
   }
 }

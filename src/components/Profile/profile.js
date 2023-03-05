@@ -1,31 +1,33 @@
 import Field from './Field/field';
 import './profile.scss';
 import female from '../Assets/Images/female.svg';
-import { useParams } from 'react-router-dom';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import url from '../../url';
 import io from 'socket.io-client';
 
 function Profile() {
-    const id = useParams()
+    const id = useParams();
+    const {user} = useSelector(state => state.auth0);
     const [profile, setProfile] = useState(null);
+    const [clicked, setClicked] = useState(false);
+
+    const location = useLocation();
     
     useEffect(() => {
-        const socket = io('https://cutting-edge.onrender.com/');
+        const socket = io(url);
 
-        socket.emit('profile', id.id);
-
-        socket.on('profile', profile => {
-            setProfile(profile);
+        socket.on('clients', array => {
+            setProfile(array.filter(c => `${c.id}` === id.id)[0]);
         });
       
         return () => {
-            socket.off('profile');
+            socket.off('clients');
         };
+    }, [location.pathname]);
 
-    }, []);
-
-
-    const fields = profile => {
+    const fields = () => {
         return [
             {
                 label: 'Phone',
@@ -38,11 +40,64 @@ function Profile() {
                 value: profile.style
             }, {
                 label: 'Requests',
-                value: profile.requests
+                value: profile.request
             }
         ]
     }
+
+    /*
+        handleDone
+        @desc: sends a message to the server that the client is done
+        @params: none
+        @return: none
+    */
+    const handleDone = () => {
+        const socket = io(url);
+        socket.emit('remove', profile);
+
+        setClicked(true);
+
+        return () => {
+            socket.off('remove');
+        };
+    }
+
+    /*
+        handleCut
+        @desc: sends a message to the server that the barber is starting the cut
+        @params: none
+        @return: none
+    */
+    const handleCut = () => {
+        const socket = io(url);
+        socket.emit('start', [user.id, profile]);
+
+        setClicked(true);
+
+        return () => {
+            socket.off('start');
+        };
+    }
+
+    /*
+        handleDrop
+        @desc: sends a message to the server that the client is dropping down the queue
+        @params: none
+        @return: none
+    */
+    const handleDrop = () => {
+        const socket = io(url);
+        socket.emit('drop', profile.id);
+        
+        setClicked(true);
+
+        return () => {
+            socket.off('drop');
+        };
+    }
     
+    console.log('clicked: ', clicked);
+    if (clicked) { return <Navigate to='/queue' />}
     return (
         <section className="profile">
             {profile &&
@@ -50,14 +105,17 @@ function Profile() {
                 <img src={female} alt='' />
                 <pre className="profile__pre">John Doe</pre>
 
-                {fields.map((field, index) => {
+                {fields().map((field, index) => {
                     return <Field key={index} label={field.label} value={field.value} />
                 })}
                 
                 <div className='admin-buttons'>
-                    <button className="done">Done</button>
-                    <button className="cut">Cut</button>
-                    <button className="drop">Drop</button>
+                    <button className="done" 
+                    onClick={handleDone}>Done</button>
+                    <button className="cut"
+                    onClick={handleCut}>Cut</button>
+                    <button className="drop"
+                    onClick={handleDrop}>Drop</button>
                 </div>
             </>
             }

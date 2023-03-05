@@ -10,12 +10,8 @@
 }
 
 .join-queue {
-    h1 {
-        font-size: xxx-large;
-        text-align: center;
-        color: #a56213;
-    }
-
+    height: inherit;
+    
     form {
         @include column-center();
     
@@ -77,6 +73,26 @@
     
         .register {
             margin: 10vh 0;      
+        }
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        height: inherit;
+
+        h1 {
+            font-size: xxx-large;
+            text-align: center;
+            color: #a56213;
+        }
+
+        a {
+            text-align: center;
+            font-size: xxx-large;
+            color: #000;
+            text-decoration-color: #a76b00;
+            margin: auto;
         }
     }
 }

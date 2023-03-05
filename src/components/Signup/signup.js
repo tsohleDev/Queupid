@@ -1,15 +1,17 @@
 import logo from '../Assets/Images/logo.svg';
 import FormGroup from '../Login/FormGroup/formGroup';
 import {useState, useEffect} from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {authenticate} from '../../redux/authenticate/authenticate';
 import { Navigate } from "react-router-dom";
 import '../Login/login.scss';
 
 function Signup() {
-    const [form, setForm] = useState({username:'',firstname:'', lastname:'', cell:'', email:'' , gender:'', dob:'', secret:'', confirmPassword:'' });
+    const {user, loading, ok} = useSelector(state => state.auth0)
+    const [onRender, setOnRender] = useState(true)
+    const [form, setForm] = useState({username:'',firstname:'', lastname:'', cell:'', email:'' , sex:'', age:23, dob:'', secret:'', confirmPassword:'' });
     const [submited, setSubmited] = useState(false)
-    const [alert, setAlert] = useState(null);
+    const [alert, setAlert] = useState('empty form');
 
     const dispatch = useDispatch();
 
@@ -61,13 +63,23 @@ function Signup() {
     }
 
     useEffect(() => {
+        if (!onRender && ok) setSubmited(true)
+        else if (!onRender && !loading && !ok) {
+            setAlert({type:'username', message:`username already exists, try ${form.username}${Math.floor(Math.random() * 100)}`})
+        } 
+
+        setOnRender(false)
+    }, [loading, user])
+
+    useEffect(() => {
         const values = Object.values(form);
         if (!alert && values.every(Boolean)) {
-            dispatch(authenticate(form));
-            //setSubmited(true);
+            console.log('dispatch');
+            dispatch(authenticate({form, method:'register'}));
         }
     }, [alert]);
-
+    
+    
     if (submited) return <Navigate to="/" replace/>;
 
     return (
@@ -80,13 +92,17 @@ function Signup() {
                 <FormGroup alert={alert} handleChange={handleChange} tag='lastname' label='Last Name'/>
                 <FormGroup alert={alert} handleChange={handleChange} tag='cell' label='Cell'/>
                 <FormGroup alert={alert} handleChange={handleChange} tag='email' label='Email'/>
-                <FormGroup alert={alert} handleChange={handleChange} tag='gender' label='Gender'/>
+                <FormGroup alert={alert} handleChange={handleChange} tag='sex' label='Gender'/>
                 <FormGroup alert={alert} handleChange={handleChange} tag='dob' label='Date of Birth'/>
                 <FormGroup alert={alert} handleChange={handleChange} tag='secret' label='Password'/>
                 <FormGroup alert={alert} handleChange={handleChange} tag='confirmPassword' label='Confirm Password'/>
 
-                <button className='button-signup register' type="button"
-                onClick={handleSubmit}>Signup</button>
+                {!loading && <button className='button-signup register' type="button"
+                onClick={handleSubmit}>Signup</button>}
+
+                {loading && <button className='button-signup' type="button">
+                    Loading...
+                </button>}
             </form>
         </section>
     )

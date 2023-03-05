@@ -22,8 +22,14 @@
         padding: 0;
         background-color: transparent;
 
-        span {
-            font-size: 9vh;
+        a {
+            text-decoration: none;
+            font-size: larger;
+            font-weight: 900;
         }
     }
+}
+
+.user {
+    background-color: #e0b500;
 }

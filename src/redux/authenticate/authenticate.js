@@ -8,54 +8,56 @@ const SET_USER = 'user/SET_USER';
 
 
 export const getUser = () => ({ type: GET_USER });
-export const setUser = (user) => ({ type: SET_USER, user });
+export const setUser = (data) => ({ type: SET_USER, data });
 export const login = (form) => ({ type: SIGN_IN, form });
 export const register = (form) => ({ type: SIGN_UP, form });
 
 export const authenticate = createAsyncThunk(
   AUTH,
-  async (args, thunkAPI) => {
-    console.log('args', args);
-    try {
-      const url = args.method === 'login' ? 'https://cutting-edge.onrender.com/login' : 'https://cutting-edge.onrender.com/register';
+  async ({form, method}, thunkAPI) => {
+    form.sex = form.sex === 'male' ? 1 : 0;
 
-      const data = await fetch(url, {
-        mode: 'no-cors',
+    try {
+      const url = method === 'login' ? 'https://cutting-edge.onrender.com/login' : 'https://cutting-edge.onrender.com/register';
+
+      const response = await fetch(url, {
         method: 'POST',
+        body: JSON.stringify(form),
         headers: {
-          'Content-Type': 'application/json',
+            'Content-type': 'application/json; charset=UTF-8',
         },
-        body: JSON.stringify(args.form),
       });
 
-      console.log('data', data);
-      if (data) {
+      const {status} = response;
+
+      const data = await response.json();
+
+      if (status === 200) {
         thunkAPI.dispatch(setUser(data));
-        return data;
+        return status;
       }
       
-      return thunkAPI.rejectWithValue('Invalid method', args.method);
+      return thunkAPI.rejectWithValue({code:status});
     } catch (error) {
-      return thunkAPI.rejectWithValue(error, args.method);
+      console.log('error', error);
+      return thunkAPI.rejectWithValue({code:500, message:error.message});
     }
   },
 );
 
-const usera = {
-  username : 'test',
-  firstName : 'first',
-  lastName  : 'last',
-  email : 'mail#mail.com',
-  phone : '555-555-5555',
-  admin : false
-}
-
-export default function reducer(state = usera, {type, user}) {
+export default function reducer(state = {user:null, loading:false, ok:false}, {type, data}) {
+  const {user, ok} = state;
   switch (type) {
     case GET_USER:
       return state;
     case SET_USER:
-      return user;
+      return {...state, user:data};
+    case authenticate.rejected.type:
+      return {user:null, loading:false, ok:false};
+    case authenticate.fulfilled.type:
+      return {user, loading:false, ok:true};
+    case authenticate.pending.type:
+      return {user, loading:true, ok};
     default:
       return state;
   }

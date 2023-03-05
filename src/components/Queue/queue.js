@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUser } from '../../redux/user/user';
+import { updateQueue } from '../../redux/queue/queue';
+import { setOptionsToBarber } from '../../redux/queueOption/options';
+import url from '../../url';
 import Chairs from "./chairs/chairs";
 import Clients from "./clients/clients";
 import './queue.scss'
@@ -9,30 +11,46 @@ import io from 'socket.io-client';
 
 function Queue() {
     const [clients, setClients] = useState([]);
+    const [displayCliets, setDisplayClients] = useState([]);
     const [seats, setSeats] = useState([]);
+    const [loading, setLoading] = useState(true);
     const location = useLocation();
     
     //admin side rendering logic using redux state
+    const isBarber = useSelector(state => state.options);
+    const queue = useSelector(state => state.queue);
+    
     const [admin, setAdmin] = useState(false);
-    const user = useSelector(state => state.user)
+    const {user} = useSelector(state => state.auth0)
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getUser());
-    }, [dispatch])
+    console.log('seats', seats);
 
     useEffect(() => {
-        setAdmin(user && user.admin)
+        setAdmin(user && user.admin ? true : false)
     }, [user])
 
     useEffect(() => {
-        const socket = io('https://cutting-edge.onrender.com/');
+        dispatch(updateQueue(clients));
+        if (clients.length === 0) setDisplayClients(clients);
+
+        if (clients.length > 0) {
+            console.log(clients);
+            setDisplayClients(clients.filter(c => c.service === isBarber && !c.onSeat))
+        }
+
+    }, [isBarber, clients])
+
+    useEffect(() => {
+        const socket = io(url);
 
         socket.on('client', (client) => {
             setClients(...clients, client);
         });
       
         socket.on('clients', array => {
+            setLoading(false);
+            console.log('incoming',array);
             setClients(array);
         });
       
@@ -42,22 +60,56 @@ function Queue() {
       
         return () => {
             socket.off('client');
-            socket.off('clients');
+            //socket.off('clients');
             socket.off('seats');
         };
     }, [location.pathname]);
 
+    const handleMoveUp = () => {
+        dispatch(setOptionsToBarber(!isBarber));
+    }
+
+    const handleTakeBreak = () => {
+        if (!user) return;
+
+        const socket = io(url);
+
+        socket.emit('break', user.id);
+        return () => {
+            socket.off('break');
+        };
+    }
+
+    const handleEndDay = () => {
+        if (!user) return;
+        const socket = io(url);
+
+        socket.emit('close', user.id);
+        return () => {
+            socket.off('close');
+        };
+    }
+
     return (
         <section id="queue">
-            <Chairs seats={seats} admin={admin} />
+            <div className='main'>
+                <button className="button-nav" onClick={handleMoveUp}>
+                    {isBarber ? 'Barber' : 'Nails'}
+                </button>
 
-            {/* {clients.length > 0 && <Clients clients={clients} admin={admin}/>} */}
-            <Clients admin={admin}/>
+                <Chairs seats={seats} user={user} isBarber={isBarber} admin={admin} />
 
-            {clients.length > 0 && <button className="button-forfit">Forfit</button>}
+                {displayCliets.length > 0 && <Clients clients={displayCliets} admin={admin}/>}
+
+            </div>
+
+            {loading && <div className="loading">Loading...</div>}
+
+            {displayCliets.length > 0 && !admin && <button className="button-forfit">Forfit</button>}
+
             {admin && <div className='admin-buttons'>
-                <button>Take Break</button>
-                <button>End Day</button>
+                <button onClick={handleTakeBreak}>Take Break</button>
+                <button onClick={handleEndDay}>End Day</button>
             </div>}
         </section>
     )

@@ -8,16 +8,17 @@ import './home.scss';
 
 function Home() {
     const [admin, setAdmin] = useState(false);
-    const user = useSelector(state => state.user)
-    const menuToogle = useSelector(state => state.menuToogle)
+    const {user} = useSelector(state => state.auth0)
     const dispatch = useDispatch();
 
+    //get user from redux store
     useEffect(() => {
         dispatch(getUser());
     }, [dispatch])
 
+    //set admin state to true if user is an admin
     useEffect(() => {
-        setAdmin(user && user.admin);
+        setAdmin(user && user.admin ? true : false);
     }, [user])
 
     return (

@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
-import { getUser } from '../../redux/user/user';
+import { getUser } from '../../redux/authenticate/authenticate';
 import { useSelector, useDispatch } from 'react-redux';
+import { appendToQueue } from '../../redux/queue/queue';
+import url from '../../url';
 import io from 'socket.io-client';
 import './form.scss'
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
-const socket = io('https://cutting-edge.onrender.com/');
+const socket = io(url);
 
 function JoinQueue() {
-
-    const user = useSelector(state => state.user)
+    const {user} = useSelector(state => state.auth0)
+    const clients = useSelector(state => state.queue)
     const service = useSelector(state => state.options)
     const dispatch = useDispatch()
     
@@ -21,13 +23,24 @@ function JoinQueue() {
 
         setForm({
             ...user, 
+            service,
+            onSeat: false,
             barber: 'any',
-            haircut: '',
+            style: 'fade',
             request: ''});
     }, [dispatch, user]);
 
     const handleClick = () => {
+        if (clients.find(c => c.id === form.id)) {
+            console.log('update');
+            socket.emit('update', form);
+            setNavigate(true);
+            return;
+        }
+
+        console.log('client');
         socket.emit('client', form);
+        dispatch(appendToQueue(form))
         setNavigate(true);
     }
 
@@ -53,7 +66,7 @@ function JoinQueue() {
                     <select 
                       id="haircut"
                       name="haircut"
-                      onChange={e => {setForm({...form, haircut:e.target.value})}}>
+                      onChange={e => {setForm({...form, style:e.target.value})}}>
                         <option value="fade">Fade</option>
                         <option value="buzzcut">Buzzcut</option>
                         <option value="crewcut">Crewcut</option>
@@ -123,7 +136,13 @@ function JoinQueue() {
                 </form>
             }
 
-            {!user && <h1>{'please login/register before you queue up'}</h1>}
+            {!user && 
+            
+            <div>
+                <h1>{'please login/register before you queue up'}</h1>
+
+                <Link to='/login'> Login </Link>
+            </div>}
         </section>
     )
 }

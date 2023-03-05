@@ -1,15 +1,15 @@
 import { configureStore  } from "@reduxjs/toolkit";
 import menuToogleReducer from "./menutoogle/menutoogle";
-import userReducer from "./user/user";
-import signUpReducer from "./authenticate/authenticate.js";
+import queueReducer from "./queue/queue";
+import authReducer from "./authenticate/authenticate.js";
 import optionsReducer from "./queueOption/options";
 
 const store = configureStore({
     reducer: {
         menuToogle: menuToogleReducer,
-        signUp: signUpReducer,
-        user: userReducer,
-        options: optionsReducer
+        auth0: authReducer,
+        options: optionsReducer,
+        queue: queueReducer
     }
 });
 

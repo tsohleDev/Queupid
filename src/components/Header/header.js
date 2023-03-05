@@ -10,20 +10,24 @@ import { useEffect, useState } from 'react';
 function Header(props) {
     const location = useLocation();
     const [admin, setAdmin] = useState(false);
-    const user = useSelector(state => state.user)
+    const {user} = useSelector(state => state.auth0)
     const dispatch = useDispatch();
 
+    // get user from redux store
     useEffect(() => {
         dispatch(getUser());
-    }, [dispatch])
+    }, [dispatch, user])
 
+    // set admin state to true if user is an admin
     useEffect(() => {
-        setAdmin(user && user.admin);
+        setAdmin(user && user.admin ? true : false);
     }, [user])
 
     const { name, links, handleClick: menuClick, menu } = props;
+    // !!still have to impliment the logic to check if the screen is mobile
     const mobile = true;
 
+    // handle click for mobile menu button
     const handleClick = () => {
         menuClick(!menu)
     }
@@ -42,7 +46,7 @@ function Header(props) {
             }
 
             {admin && <Link to='/queue' className='admin-link'>
-                        {user.username}
+                        {user ? user.username : 'Admin'}
                     </Link>
             }
 
