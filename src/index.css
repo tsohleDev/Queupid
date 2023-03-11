@@ -6,6 +6,7 @@ main {
   position: fixed;
   overflow: scroll;
   width: 95.736%;
+  padding-bottom: 15vh;
   margin: 8px;
   height: -webkit-fill-available;
   left: 0;
