@@ -40,6 +40,8 @@ function Login() {
         <section id='login-page'>
             <img src={logo} alt='Cutting Edge Logo'/>
 
+            <Link to="/signup"> Create a new account </Link>
+            
             <form >
                 <FormGroup alert={alert} handleChange={handleChange} tag='username' label='Username'/>
                 <FormGroup handleChange={handleChange} tag='secret' label='Password'/>
@@ -53,7 +55,7 @@ function Login() {
                 
             </form>
 
-            <Link to="/signup"> Create a new account </Link>
+            <div className='login-footer'/>
         </section>
     )
 }

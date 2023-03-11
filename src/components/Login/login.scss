@@ -20,6 +20,7 @@
     form {
         display: flex;
         flex-direction: column;
+        padding-bottom: 20vh;
 
         .form-group {
           display: flex;
@@ -41,7 +42,8 @@
           }
 
           input {
-            height: 6vh;
+            height: 8vh;
+            font-size: xx-large;
             width: 90%;
             margin: 0 auto;
             height: 7vh;
@@ -66,5 +68,10 @@
       margin: auto;
       font-size: larger;
       color: black;
+      margin-bottom: 5vh;
+    }
+
+    .login-footer {
+      height: 10vh;
     }
 }
