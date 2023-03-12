@@ -103,7 +103,7 @@ function Profile() {
             {profile &&
              <> 
                 <img src={female} alt='' />
-                <pre className="profile__pre">John Doe</pre>
+                <pre className="profile__pre">{profile.username}</pre>
 
                 {fields().map((field, index) => {
                     return <Field key={index} label={field.label} value={field.value} />

@@ -1,18 +1,16 @@
 #home {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    padding: 10vh 0;
     height: inherit;
 
     img {
         width: 100%;
-        width: 100%;
-        margin-bottom: 10vh;
     }
     
     button {
+        align-self: center;
         a {
             text-decoration: none;
             color: inherit;

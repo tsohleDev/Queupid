@@ -67,12 +67,16 @@ function JoinQueue() {
                       id="haircut"
                       name="haircut"
                       onChange={e => {setForm({...form, style:e.target.value})}}>
-                        <option value="fade">Fade</option>
-                        <option value="buzzcut">Buzzcut</option>
-                        <option value="crewcut">Crewcut</option>
-                        <option value="mohawk">Mohawk</option>
-                        <option value="afro">Afro</option>
-                        <option value="bald">Bald</option>
+                        <option value="Standard Haircut">Standard Haircut</option>
+                        <option value="Cut and Dye">Cut and Dye</option>
+                        <option value="Cut and Hair Dye Fibrecut">Cut and Hair Dye Fibre</option>
+                        <option value="Cut and Bleach">Cut and Bleach</option>
+                        <option value="Chiskop razor">Chiskop razor</option>
+                        <option value="Chiskop clipper">Chiskop clipper</option>
+                        <option value="Beard shave razor">Beard shave razor</option>
+                        <option value="Beard clipper">Beard clipper</option>
+                        <option value="Edge Up">Edge Up</option>
+                        <option value="Line Up">Line Up</option>
                     </select>
                 </div>
 
