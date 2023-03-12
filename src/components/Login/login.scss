@@ -2,7 +2,8 @@
 #register-page {
     display: flex;
     flex-direction: column;
-
+    overflow-y: scroll;
+    
     img {
         width: 70vw;
         align-self: center;
