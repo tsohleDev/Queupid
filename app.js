@@ -84,8 +84,8 @@ const emtySeat = (index, availability, id) => {
 const io = require('socket.io')(http, { cors: { origin: "*" } });
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, 'dist')));
-app.use(express.json());
+// app.use(express.static(path.join(__dirname, 'dist')));
+// app.use(express.json());
 
 app.post('/register', async (request, response) => {
   const client = new pg.Client(conString);
@@ -177,24 +177,17 @@ io.on('connection', (socket) => {
   });
 
   socket.on('remove', (client) => {
-    queue = queue.reduce((array, element) => {
-      if (element.username !== client.username) {
-        array.push(element)
-      }
-
-      return array;
-    }, []);
+    queue = queue.filter(element => element.id !== client.id)
 
     console.log('remove', client.username)
     io.emit('clients', queue);   
 
     const seat = seats.findIndex(seat => {
       if (seat.client) {
-        return client.username === seat.client.username
+        return client.id === seat.client.id
       } else { 
         return false
       }
-
     })
 
     if (seat >= 0) {
@@ -236,7 +229,7 @@ io.on('connection', (socket) => {
     const index = seats.findIndex(seat => seat.barber === null || seat.barber.id === array[0]) 
     const client = array[1]
 
-    console.log(index);
+    console.log('start', client.username, 'with', array[0]);
     seats[index] = {
       occupied: true,
       available: null,
@@ -245,13 +238,13 @@ io.on('connection', (socket) => {
     }
     io.emit('seats', seats)
 
-    queue = queue.reduce((array, element) => {
-      if (element.username !== client.username) {
-        array.push(element)
+    queue = queue.map(client => {
+      if (client.id === array[1].id) {
+        client.onSeat = true
       }
 
-      return array;
-    }, []);
+      return client
+    })
 
     console.log(client.username, 'is now on seat')
     io.emit('clients', queue);
