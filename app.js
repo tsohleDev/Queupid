@@ -85,7 +85,7 @@ const io = require('socket.io')(http, { cors: { origin: "*" } });
 app.use(cors());
 
 // app.use(express.static(path.join(__dirname, 'dist')));
-// app.use(express.json());
+app.use(express.json());
 
 app.post('/register', async (request, response) => {
   const client = new pg.Client(conString);
