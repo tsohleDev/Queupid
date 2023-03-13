@@ -10,7 +10,7 @@
 }
 
 .join-queue {
-    height: inherit;
+    height: 100%;
     
     form {
         @include column-center();
@@ -82,14 +82,14 @@
         height: inherit;
 
         h1 {
-            font-size: xxx-large;
+            font-size: 15vw;
             text-align: center;
             color: #a56213;
         }
 
         a {
             text-align: center;
-            font-size: xxx-large;
+            font-size: xx-large;
             color: #000;
             text-decoration-color: #a76b00;
             margin: auto;
