@@ -1,8 +1,12 @@
 #login-page,
 #register-page {
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
     
     img {
         width: 70vw;
@@ -65,13 +69,8 @@
 
     a {
       align-self: center;
-      margin: auto;
+      margin: 2vh auto;
       font-size: larger;
       color: black;
-      margin-bottom: 5vh;
-    }
-
-    .login-footer {
-      height: 10vh;
     }
 }
