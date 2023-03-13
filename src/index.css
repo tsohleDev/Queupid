@@ -7,7 +7,7 @@ main {
   overflow: scroll;
   width: 95.736%;
   margin: 8px;
-  height: 85svh;
+  height: inherit;
   left: 0;
   top: 10%;
 }
