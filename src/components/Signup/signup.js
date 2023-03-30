@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {authenticate} from '../../redux/authenticate/authenticate';
 import { Navigate } from "react-router-dom";
 import '../Login/login.scss';
+import './signup.scss';
 
 function Signup() {
     const {user, loading, ok} = useSelector(state => state.auth0)

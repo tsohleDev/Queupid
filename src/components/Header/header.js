@@ -32,7 +32,14 @@ function Header(props) {
         menuClick(!menu)
     }
     
-    if (location.pathname === '/login' || location.pathname === '/signup') return null;
+    if (location.pathname === '/login' || location.pathname === '/signup') 
+    {
+        //change main style to display: none
+        document.querySelector('main').style.top = '0';
+        document.querySelector('main').style.height = '100%';
+
+        return null;
+    }
      
     return (
         <header className={admin ? 'header-admin' : 'header'}>
