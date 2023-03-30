@@ -41,9 +41,13 @@ function Header(props) {
         return null;
     }
 
-    document.querySelector('main').style.top = '10%';
-    document.querySelector('main').style.height = '90%';
-     
+    const header = document.querySelector('main')
+    
+    if (header){
+        header.style.top = '10%';
+        header.style.height = '90%';
+    }
+    
     return (
         <header className={admin ? 'header-admin' : 'header'}>
             <Link to='/' >
