@@ -13,7 +13,7 @@ const path = require('path')
 
 var pg = require('pg');
 const { connect } = require('http2');
-var conString = "postgres://clients_user:PDEYxoHr8eQiipm7b8lgI9LrqkJZPZwP@dpg-cehoqlpgp3jvlf06e91g-a/clients" //Can be found in the Details page
+var conString = "postgres://sers0_user:H7BXJ4OXiGlfINywbS5bnXNbMK64hIPi@dpg-cgiijj9r8t1g7lpjmup0-a/sers0" //Can be found in the Details page
  
 const connectToDatabase = async () => {
   try 
