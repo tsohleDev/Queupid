@@ -40,6 +40,9 @@ function Header(props) {
 
         return null;
     }
+
+    document.querySelector('main').style.top = '10%';
+    document.querySelector('main').style.height = '90%';
      
     return (
         <header className={admin ? 'header-admin' : 'header'}>
