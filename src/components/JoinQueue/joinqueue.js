@@ -54,10 +54,10 @@ function JoinQueue() {
                       id="barber" 
                       name="barber" 
                       onChange={(e) => {setForm({...form, barber: e.target.value})}}>
-                        <option value="joe">Joe</option>
-                        <option value="jane">Jane</option>
-                        <option value="jim">Jim</option>
-                        <option value="jill">Jill</option>
+                        <option value="ntsako">Ntsako</option>
+                        <option value="zamo">Zamo</option>
+                        <option value="nqobile">Nqobile</option>
+                        <option value="thabo">Thabo</option>
                     </select>
                 </div>
 
