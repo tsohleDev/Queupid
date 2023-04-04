@@ -90,6 +90,18 @@ function Queue() {
         };
     }
 
+    const handleForfit = () => {
+        if (!user) return;
+
+        const socket = io(url);
+
+        socket.emit('remove', user);
+
+        return () => {
+            socket.off('remove');
+        };
+    }
+
     return (
         <section id="queue">
             <div className='main'>
@@ -105,7 +117,10 @@ function Queue() {
 
             {loading && <div className="loading">Loading...</div>}
 
-            {displayCliets.length > 0 && !admin && <button className="button-forfit">Forfit</button>}
+            {displayCliets.length > 0 && !admin && 
+               <button className="button-forfit"
+               onClick={handleForfit}>Forfit</button>
+            }
 
             {admin && <div className='admin-buttons'>
                 <button onClick={handleTakeBreak}>Take Break</button>
