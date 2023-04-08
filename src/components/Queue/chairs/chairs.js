@@ -42,11 +42,16 @@ function Chairs(props) {
     useEffect(() => {
         if (!user) return;
 
+        //find the barbers seat from the four seats
         let i = seats.findIndex(s => s.barber && s.barber.id === user.id)
         if (i === -1) i = seats.findIndex(s => s.barber === null);
         
+        //if the barber found, set the admin seat
         if (i !== -1) setadminSeat(seats[i]);
+
+        //if the barber is seated, set the admin chair
         if (seats[i] && seats[i].occupied) setAdminChair(centerSeated);
+        else setAdminChair(centerSeat);
         console.log(i);
     }, [seats]);
 
