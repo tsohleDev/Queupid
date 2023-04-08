@@ -50,7 +50,7 @@ function Chairs(props) {
         console.log(i);
     }, [seats]);
 
-    if (navigate) {return <Navigate to="/profile/5" />}
+    if (navigate) {return <Navigate to={`/profile/${adminSeat.client.id}`} />}
     return (
         <>
         {alert && <div className="alert">{alert}</div>}

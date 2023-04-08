@@ -19,6 +19,7 @@ function Profile() {
         const socket = io(url);
 
         socket.on('clients', array => {
+            console.log('clients', array);
             setProfile(array.filter(c => `${c.id}` === id.id)[0]);
         });
       
@@ -96,7 +97,7 @@ function Profile() {
         };
     }
     
-    console.log('clicked: ', clicked);
+    console.log('profile', profile);
     if (clicked) { return <Navigate to='/queue' />}
     return (
         <section className="profile">
